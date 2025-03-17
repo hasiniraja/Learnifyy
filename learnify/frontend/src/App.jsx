@@ -88,7 +88,30 @@ export default function App() {
           </motion.button>
         </motion.div>
       </motion.div>
-
+       {/* Explore Section with 3D Tilt Cards */}
+      <div className="max-w-6xl mx-auto my-10 px-6 text-left">
+        <h2 className="text-3xl font-bold mb-4">Explore Trending Topics</h2>
+        <div className="flex space-x-4 overflow-x-auto whitespace-nowrap py-4 no-scrollbar">
+          {[
+            { title: "AI in Education", image: "https://source.unsplash.com/300x200/?ai,education" },
+            { title: "Mathematics for Beginners", image: "https://source.unsplash.com/300x200/?math" },
+            { title: "Physics Masterclass", image: "https://source.unsplash.com/300x200/?physics" },
+            { title: "Web Development Basics", image: "https://source.unsplash.com/300x200/?coding" },
+            { title: "JEE Mains Preparation", image: "https://source.unsplash.com/300x200/?students,study" },
+          ].map((topic, index) => (
+            <Tilt key={index} options={{ max: 15, scale: 1.05, speed: 500 }}>
+              <div className="min-w-[300px] bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition duration-200">
+                <img src={topic.image} alt={topic.title} className="w-full h-48 object-cover" />
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold">{topic.title}</h3>
+                  <p className="text-gray-600 text-sm mt-2">Explore courses and resources</p>
+                  <button className="mt-3 text-black hover:text-gray-700">Learn More →</button>
+                </div>
+              </div>
+            </Tilt>
+          ))}
+        </div>
+      </div>
       {/* Footer */}
       <footer className="bg-gray-200 text-black py-6 text-left px-10">
         <p>© 2025 Learnify. All rights reserved.</p>
