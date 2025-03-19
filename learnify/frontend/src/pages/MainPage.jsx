@@ -79,6 +79,7 @@ export default function MainPage() {
             <motion.button
               className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800"
               whileHover={{ scale: 1.1 }}
+              onClick={() => navigate("/signup")}
             >
               Sign Up
             </motion.button>
