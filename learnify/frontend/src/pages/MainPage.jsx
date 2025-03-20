@@ -102,11 +102,11 @@ export default function MainPage() {
         <h2 className="text-3xl font-bold mb-4">Explore Trending Topics</h2>
         <div className="flex space-x-4 overflow-x-auto whitespace-nowrap py-4 no-scrollbar">
           {[
-            { title: "AI in Education", image: "https://source.unsplash.com/300x200/?ai,education" },
-            { title: "Mathematics for Beginners", image: "https://source.unsplash.com/300x200/?math" },
-            { title: "Physics Masterclass", image: "https://source.unsplash.com/300x200/?physics" },
-            { title: "Web Development Basics", image: "https://source.unsplash.com/300x200/?coding" },
-            { title: "JEE Mains Preparation", image: "https://source.unsplash.com/300x200/?students,study" },
+            { title: "AI in Education", image: "https://plus.unsplash.com/premium_photo-1683121710572-7723bd2e235d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YWl8ZW58MHx8MHx8fDA%3D" },
+            { title: "Mathematics for Beginners", image: "https://media.istockphoto.com/id/1183952376/photo/graph-of-parabola.webp?a=1&b=1&s=612x612&w=0&k=20&c=wjTp2hS-p2VADt_LLs4NHdTWPsouuecBTXM44MwCQH4=" },
+            { title: "Physics Masterclass", image: "https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGh5c2ljc3xlbnwwfHwwfHx8MA%3D%3D" },
+            { title: "Web Development Basics", image: "https://images.unsplash.com/photo-1593720213428-28a5b9e94613?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2ViJTIwZGV2ZWxvcG1lbnR8ZW58MHx8MHx8fDA%3D" },
+            { title: "JEE Mains Preparation", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqGekaobKGw6pGFjQGYE-wX-5a9L1yuIn-rg&s" },
           ].map((topic, index) => (
             <Tilt key={index} options={{ max: 15, scale: 1.05, speed: 500 }}>
               <div className="min-w-[300px] bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition duration-200">
