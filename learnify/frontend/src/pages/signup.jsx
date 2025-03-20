@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 import Lottie from "lottie-react";
 
-export default function SignUpPage() {
+export default function SignUp() {
+  const navigate = useNavigate(); // Initialize navigation
   const [userType, setUserType] = useState("learner");
   const [formData, setFormData] = useState({
     firstName: "",
@@ -27,9 +29,30 @@ export default function SignUpPage() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Signup functionality to be implemented!");
+
+    try {
+      const response = await fetch("http://localhost:5000/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Signup Successful! 🎉 Redirecting to login...");
+        navigate("/login"); // Redirect to login page
+      } else {
+        alert(`Signup Failed: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Error during signup:", error);
+      alert("Signup Failed: Server error");
+    }
   };
 
   return (
@@ -67,17 +90,15 @@ export default function SignUpPage() {
               <input type="password" name="password" placeholder="Password" className="w-full p-3 border rounded-lg" onChange={handleChange} required />
             </div>
             {userType === "learner" && (
-              <>
-                <div className="mb-4 flex space-x-3">
-                  <input type="date" name="dob" className="w-1/2 p-3 border rounded-lg" onChange={handleChange} required />
-                  <select name="educationLevel" className="w-1/2 p-3 border rounded-lg" onChange={handleChange} required>
-                    <option value="">Education Level</option>
-                    <option value="High School">High School</option>
-                    <option value="Undergraduate">Undergraduate</option>
-                    <option value="Graduate">Graduate</option>
-                  </select>
-                </div>
-              </>
+              <div className="mb-4 flex space-x-3">
+                <input type="date" name="dob" className="w-1/2 p-3 border rounded-lg" onChange={handleChange} required />
+                <select name="educationLevel" className="w-1/2 p-3 border rounded-lg" onChange={handleChange} required>
+                  <option value="">Education Level</option>
+                  <option value="High School">High School</option>
+                  <option value="Undergraduate">Undergraduate</option>
+                  <option value="Graduate">Graduate</option>
+                </select>
+              </div>
             )}
             {userType === "teacher" && (
               <div className="mb-4">
@@ -105,3 +126,4 @@ export default function SignUpPage() {
     </div>
   );
 }
+

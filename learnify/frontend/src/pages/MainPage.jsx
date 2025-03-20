@@ -7,17 +7,20 @@ import { useNavigate } from "react-router-dom";
 export default function MainPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const [animationData, setAnimationData] = useState(null);
+  const [heroAnimation, setHeroAnimation] = useState(null);
+  const [aboutAnimation, setAboutAnimation] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetch("/video.json")
-  .then((response) => {
-    if (!response.ok) throw new Error("Failed to load animation");
-    return response.json();
-  })
-  .then((data) => setAnimationData(data))
-  .catch((error) => console.error("Error loading animation:", error));
+      .then((res) => res.json())
+      .then((data) => setHeroAnimation(data))
+      .catch((err) => console.error("Error loading hero animation:", err));
+
+    fetch("/about.json")
+      .then((res) => res.json())
+      .then((data) => setAboutAnimation(data))
+      .catch((err) => console.error("Error loading about animation:", err));
   }, []);
 
   useEffect(() => {
@@ -39,7 +42,7 @@ export default function MainPage() {
         transition={{ duration: 1.2, ease: "easeOut" }}
       >
         <div className="absolute top-10 right-10 w-200">
-          {animationData ? <Lottie animationData={animationData} loop={true} /> : <p>Loading...</p>}
+          {heroAnimation ? <Lottie animationData={heroAnimation} loop={true} /> : <p>Loading...</p>}
         </div>
 
         <nav className="absolute top-0 left-0 w-full flex justify-between items-center px-10 py-4 bg-transparent text-black">
@@ -64,10 +67,10 @@ export default function MainPage() {
                 </div>
               )}
             </li>
-            <li><a href="#" className="hover:text-gray-700">Explore</a></li>
-            <li><a href="#" className="hover:text-gray-700">Contact Us</a></li>
-            <li><a href="#" className="hover:text-gray-700">Donate</a></li>
-          </ul>
+           <li><button onClick={() => navigate("/explore")} className="hover:text-gray-700">Explore</button></li>
+          <li><button onClick={() => navigate("/contact")} className="hover:text-gray-700">Contact Us</button></li>
+          <li><button onClick={() => navigate("/donate")} className="hover:text-gray-700">Donate</button></li>
+            </ul>
           <div className="space-x-4">
             <motion.button
               className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800"
@@ -118,6 +121,43 @@ export default function MainPage() {
           ))}
         </div>
       </div>
+      {/* ABOUT US SECTION */}
+      <section id="about" className="relative bg-black text-white py-16 px-6 w-full rounded-l-full">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold mb-6 text-center">About Us</h2>
+          <p className="text-lg text-left text-white mt-4 max-w-3xl mx-auto">
+          We are dedicated to empowering students through accessible learning
+          resources, mentorship, and hands-on projects. Our goal is to make
+          education engaging and impactful for everyone.
+        </p>
+          {/* About Us Content */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            {/* Left - Lottie Animation */}
+            <div className="flex justify-center items-center">
+              {aboutAnimation ? (
+                <Lottie animationData={aboutAnimation} className="w-100 h-100" />
+              ) : (
+                <p className="text-center">Loading animation...</p>
+              )}
+            </div>
+
+            {/* Right - About Us Text */}
+            <div>
+              <h3 className="text-2xl font-semibold">Empowering Learners, One Step at a Time</h3>
+              <p className="mt-4">
+                At Learnify, we believe that education should be engaging, accessible, and innovative. Our mission is to create a learning ecosystem where students, teachers, and professionals can grow together through technology-driven education.
+              </p>
+              <h3 className="text-2xl font-semibold mt-6">What Sets Us Apart?</h3>
+              <ul className="mt-4 space-y-2">
+                <li>✅ Interactive and personalized learning experience</li>
+                <li>✅ Expert mentors guiding you at every step</li>
+                <li>✅ A collaborative and vibrant learning community</li>
+                <li>✅ Cutting-edge technology and AI-powered resources</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* Footer */}
       <footer className="bg-gray-200 text-black py-6 text-left px-10">
         <p>© 2025 Learnify. All rights reserved.</p>
