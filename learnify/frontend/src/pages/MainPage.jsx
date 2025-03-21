@@ -10,6 +10,17 @@ export default function MainPage() {
   const [heroAnimation, setHeroAnimation] = useState(null);
   const [aboutAnimation, setAboutAnimation] = useState(null);
   const navigate = useNavigate();
+  const scrollRef = useRef(null);
+  const [scrolling, setScrolling] = useState(true);
+
+  // Define topics array as a constant for easier duplication
+  const topics = [
+    { title: "AI in Education", image: "https://plus.unsplash.com/premium_photo-1683121710572-7723bd2e235d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YWl8ZW58MHx8MHx8fDA%3D" },
+    { title: "Mathematics for Beginners", image: "https://media.istockphoto.com/id/1183952376/photo/graph-of-parabola.webp?a=1&b=1&s=612x612&w=0&k=20&c=wjTp2hS-p2VADt_LLs4NHdTWPsouuecBTXM44MwCQH4=" },
+    { title: "Physics Masterclass", image: "https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGh5c2ljc3xlbnwwfHwwfHx8MA%3D%3D" },
+    { title: "Web Development Basics", image: "https://images.unsplash.com/photo-1593720213428-28a5b9e94613?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2ViJTIwZGV2ZWxvcG1lbnR8ZW58MHx8MHx8fDA%3D" },
+    { title: "JEE Mains Preparation", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqGekaobKGw6pGFjQGYE-wX-5a9L1yuIn-rg&s" },
+  ];
 
   useEffect(() => {
     fetch("/video.json")
@@ -23,15 +34,33 @@ export default function MainPage() {
       .catch((err) => console.error("Error loading about animation:", err));
   }, []);
 
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsDropdownOpen(false);
+    }
+  };
+
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
-      }
+    let scrollInterval;
+
+    const startScrolling = () => {
+      scrollInterval = setInterval(() => {
+        if (scrollRef.current) {
+          scrollRef.current.scrollLeft += 5; // Adjust speed as needed
+          // When scrolled through one set of topics, reset scrollLeft to 0 for infinite loop
+          if (scrollRef.current.scrollLeft >= scrollRef.current.scrollWidth / 2) {
+            scrollRef.current.scrollLeft = 0;
+          }
+        }
+      }, 30); // Adjust interval for smoothness
     };
+    if (scrolling) startScrolling();
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    return () => {
+      clearInterval(scrollInterval);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [scrolling]);
 
   return (
     <div className="relative w-full min-h-screen text-black">
@@ -67,15 +96,27 @@ export default function MainPage() {
                 </div>
               )}
             </li>
-           <li><button onClick={() => navigate("/explore")} className="hover:text-gray-700">Explore</button></li>
-          <li><button onClick={() => navigate("/contact")} className="hover:text-gray-700">Contact Us</button></li>
-          <li><button onClick={() => navigate("/donate")} className="hover:text-gray-700">Donate</button></li>
-            </ul>
+            <li>
+              <button onClick={() => navigate("/explore")} className="hover:text-gray-700">
+                Explore
+              </button>
+            </li>
+            <li>
+              <button onClick={() => navigate("/contact")} className="hover:text-gray-700">
+                Contact Us
+              </button>
+            </li>
+            <li>
+              <button onClick={() => navigate("/donate")} className="hover:text-gray-700">
+                Donate
+              </button>
+            </li>
+          </ul>
           <div className="space-x-4">
             <motion.button
               className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800"
               whileHover={{ scale: 1.1 }}
-              onClick={() => navigate("/login")} // Navigate to Login Page
+              onClick={() => navigate("/login")}
             >
               Log In
             </motion.button>
@@ -89,10 +130,20 @@ export default function MainPage() {
           </div>
         </nav>
 
-        <motion.div className="max-w-3xl" initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ duration: 1 }}>
+        <motion.div
+          className="max-w-3xl"
+          initial={{ scale: 0.8 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1 }}
+        >
           <h1 className="text-6xl font-bold drop-shadow-lg">Empower Learning with AI</h1>
-          <p className="text-lg mt-4 drop-shadow-md">Personalized education for every student, powered by cutting-edge AI technology.</p>
-          <motion.button className="mt-6 bg-black text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:bg-gray-800" whileHover={{ scale: 1.1 }}>
+          <p className="text-lg mt-4 drop-shadow-md">
+            Personalized education for every student, powered by cutting-edge AI technology.
+          </p>
+          <motion.button
+            className="mt-6 bg-black text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:bg-gray-800"
+            whileHover={{ scale: 1.1 }}
+          >
             Get Started
           </motion.button>
         </motion.div>
@@ -100,15 +151,20 @@ export default function MainPage() {
       {/* Explore Section with 3D Tilt Cards */}
       <div className="max-w-6xl mx-auto my-10 px-6 text-left">
         <h2 className="text-3xl font-bold mb-4">Explore Trending Topics</h2>
-        <div className="flex space-x-4 overflow-x-auto whitespace-nowrap py-4 no-scrollbar">
-          {[
-            { title: "AI in Education", image: "https://plus.unsplash.com/premium_photo-1683121710572-7723bd2e235d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YWl8ZW58MHx8MHx8fDA%3D" },
-            { title: "Mathematics for Beginners", image: "https://media.istockphoto.com/id/1183952376/photo/graph-of-parabola.webp?a=1&b=1&s=612x612&w=0&k=20&c=wjTp2hS-p2VADt_LLs4NHdTWPsouuecBTXM44MwCQH4=" },
-            { title: "Physics Masterclass", image: "https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGh5c2ljc3xlbnwwfHwwfHx8MA%3D%3D" },
-            { title: "Web Development Basics", image: "https://images.unsplash.com/photo-1593720213428-28a5b9e94613?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2ViJTIwZGV2ZWxvcG1lbnR8ZW58MHx8MHx8fDA%3D" },
-            { title: "JEE Mains Preparation", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqGekaobKGw6pGFjQGYE-wX-5a9L1yuIn-rg&s" },
-          ].map((topic, index) => (
-            <Tilt key={index} options={{ max: 15, scale: 1.05, speed: 500 }}>
+        <div
+          ref={scrollRef}
+          style={{
+            scrollBehavior: "smooth",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          }}
+          onMouseEnter={() => setScrolling(false)}
+          onMouseLeave={() => setScrolling(true)}
+          className="flex space-x-4 overflow-x-auto whitespace-nowrap py-4 no-scrollbar"
+        >
+          {/* Render topics twice for an infinite scroll effect */}
+          {[...topics, ...topics].map((topic, index) => (
+            <Tilt key={index} options={{ max: 15, scale: 1.05, speed: 700 }}>
               <div className="min-w-[300px] bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition duration-200">
                 <img src={topic.image} alt={topic.title} className="w-full h-48 object-cover" />
                 <div className="p-4">
@@ -121,53 +177,74 @@ export default function MainPage() {
           ))}
         </div>
       </div>
+      <div>
       {/* ABOUT US SECTION */}
-      <section id="about" className="relative bg-black text-white py-16 px-6 w-full rounded-l-full">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-6 text-center">About Us</h2>
-          <p className="text-lg text-left text-white mt-4 max-w-3xl mx-auto">
-          We are dedicated to empowering students through accessible learning
-          resources, mentorship, and hands-on projects. Our goal is to make
-          education engaging and impactful for everyone.
-        </p>
-          {/* About Us Content */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            {/* Left - Lottie Animation */}
-            <div className="flex justify-center items-center">
-              {aboutAnimation ? (
-                <Lottie animationData={aboutAnimation} className="w-100 h-100" />
-              ) : (
-                <p className="text-center">Loading animation...</p>
-              )}
-            </div>
+<section
+  id="about"
+  className="relative bg-black text-white py-16 px-6 w-full md:rounded-l-full"
+>
+  <div className="max-w-6xl mx-auto">
+    <h2 className="text-3xl font-bold mb-6 text-center">About Us</h2>
+    <p className="text-lg text-left text-white mt-4 max-w-3xl mx-auto">
+      We are dedicated to empowering students through accessible learning resources,
+      mentorship, and hands-on projects. Our goal is to make education engaging and impactful
+      for everyone.
+    </p>
+    {/* About Us Content */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      {/* Left - Lottie Animation */}
+      <div className="flex justify-center items-center">
+        {aboutAnimation ? (
+          <Lottie animationData={aboutAnimation} className="w-100 h-100" />
+        ) : (
+          <p className="text-center">Loading animation...</p>
+        )}
+      </div>
 
-            {/* Right - About Us Text */}
-            <div>
-              <h3 className="text-2xl font-semibold">Empowering Learners, One Step at a Time</h3>
-              <p className="mt-4">
-                At Learnify, we believe that education should be engaging, accessible, and innovative. Our mission is to create a learning ecosystem where students, teachers, and professionals can grow together through technology-driven education.
-              </p>
-              <h3 className="text-2xl font-semibold mt-6">What Sets Us Apart?</h3>
-              <ul className="mt-4 space-y-2">
-                <li>✅ Interactive and personalized learning experience</li>
-                <li>✅ Expert mentors guiding you at every step</li>
-                <li>✅ A collaborative and vibrant learning community</li>
-                <li>✅ Cutting-edge technology and AI-powered resources</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Right - About Us Text */}
+      <div>
+        <h3 className="text-2xl font-semibold">Empowering Learners, One Step at a Time</h3>
+        <p className="mt-4">
+          At Learnify, we believe that education should be engaging, accessible, and innovative.
+          Our mission is to create a learning ecosystem where students, teachers, and professionals
+          can grow together through technology-driven education.
+        </p>
+        <h3 className="text-2xl font-semibold mt-6">What Sets Us Apart?</h3>
+        <ul className="mt-4 space-y-2">
+          <li>✅ Interactive and personalized learning experience</li>
+          <li>✅ Expert mentors guiding you at every step</li>
+          <li>✅ A collaborative and vibrant learning community</li>
+          <li>✅ Cutting-edge technology and AI-powered resources</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
       {/* Footer */}
       <footer className="bg-gray-200 text-black py-6 text-left px-10">
         <p>© 2025 Learnify. All rights reserved.</p>
         <div className="mt-4">
-          <a href="#" className="text-gray-700 hover:text-black mx-2">Privacy Policy</a> |
-          <a href="#" className="text-gray-700 hover:text-black mx-2">Terms of Service</a> |
-          <a href="#" className="text-gray-700 hover:text-black mx-2">Contact</a>
+          <a href="#" className="text-gray-700 hover:text-black mx-2">
+            Privacy Policy
+          </a>{" "}
+          |{" "}
+          <a href="#" className="text-gray-700 hover:text-black mx-2">
+            Terms of Service
+          </a>{" "}
+          |{" "}
+          <a href="#" className="text-gray-700 hover:text-black mx-2">
+            Contact
+          </a>
         </div>
       </footer>
+      {/* Inline style to hide scrollbar for WebKit browsers */}
+      <style>{`
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </div>
-    
   );
 }
