@@ -3,6 +3,15 @@ import { motion } from "framer-motion";
 import Tilt from "react-parallax-tilt";
 import Lottie from "lottie-react";
 import { useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+// Import Swiper modules (if using navigation, pagination, etc.)
+import { Navigation, Pagination } from 'swiper/modules';
 
 export default function MainPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -61,6 +70,30 @@ export default function MainPage() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [scrolling]);
+  const testimonials = [
+    {
+      image:
+        "https://plus.unsplash.com/premium_photo-1682089897177-4dbc85aa672f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8aW5kaWFuJTIwaGlnaCUyMHNjaG9vbCUyMGdpcmx8ZW58MHx8MHx8fDA%3D",
+      name: "Ayesha R.",
+      quote:
+        "This platform has been my learning companion from 7th to 10th grade, making complex topics easy to understand. The interactive lessons and supportive mentors kept me motivated. I'm truly grateful for the knowledge and confidence it has given me!",
+    },
+    {
+      image:
+        "https://plus.unsplash.com/premium_photo-1682089851706-d0d4c95b9b99?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8aW5kaWFuJTIwaGlnaCUyMHNjaG9vbCUyMGJveXxlbnwwfHwwfHx8MA%3D%3D",
+      name: "Rahul M.",
+      quote:
+        "Learnify made learning fun! The gamified lessons and real-world applications helped me retain knowledge better. Highly recommended for students!",
+    },
+    {
+      image:
+        "https://media.istockphoto.com/id/1077209398/photo/college-boy-stock-image.webp?a=1&b=1&s=612x612&w=0&k=20&c=XVbBflj6-LT8_YRFSb_-LWtV4w1PzQicOM-V9Hnzql8=",
+      name: "Ram",
+      quote:
+        "A great initiative! Transparency and accountability at its best.",
+    },
+  ];
+
 
   return (
     <div className="relative w-full min-h-screen text-black">
@@ -221,6 +254,53 @@ export default function MainPage() {
   </div>
 </section>
 </div>
+{/* Card */}
+<div className="max-w-6xl mx-auto my-10 px-6 text-left">
+      <h2 className="text-3xl font-bold mb-4">Success Stories</h2></div>
+      <div className="max-w-3xl mx-auto">
+      <Swiper
+        modules={[Pagination]}
+        pagination={{ clickable: true }}
+        spaceBetween={20}
+        slidesPerView={1}
+        loop={true}
+        className="mt-16"
+      >
+        {testimonials.map((review, index) => (
+          <SwiperSlide key={index}>
+            <div className="mt-6 mb-10 relative flex items-center bg-[#F8FCFA] p-8 rounded-2xl shadow-lg max-w-3xl mx-auto">
+              {/* Logo */}
+              <div className="absolute -top-6 -left-0 bg-black p-2 rounded-2xl shadow-md ">
+                <img
+                  src={review.image}
+                  alt={review.name}
+                  className="w-26 h-26 object-cover rounded-2xl"
+                />
+              </div>
+
+              {/* Testimonial Content */}
+              <div className="ml-28">
+                <p className="text-xs uppercase text-gray-500 font-semibold tracking-wide">
+                  Learnify!
+                </p>
+                <blockquote className="text-lg font-medium text-gray-800 mt-2">
+                  "{review.quote}"
+                </blockquote>
+                <p className="text-sm text-gray-700 font-semibold mt-4">
+                  {review.name}
+                </p>
+                <a
+                  href="#"
+                  className="mt-4 inline-flex items-center text-green-700 font-medium hover:underline"
+                >
+                  Read Customer Story →
+                </a>
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
 
       {/* Footer */}
       <footer className="bg-gray-200 text-black py-6 text-left px-10">
