@@ -4,6 +4,10 @@ import Tilt from "react-parallax-tilt";
 import Lottie from "lottie-react";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import Header from "../components/Header.jsx";
+import Footer from "../components/Footer.jsx";
+
+
 
 // Import Swiper styles
 import 'swiper/css';
@@ -12,7 +16,6 @@ import 'swiper/css/pagination';
 
 // Import Swiper modules (if using navigation, pagination, etc.)
 import { Navigation, Pagination } from 'swiper/modules';
-
 export default function MainPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -106,62 +109,8 @@ export default function MainPage() {
         <div className="absolute top-10 right-10 w-200">
           {heroAnimation ? <Lottie animationData={heroAnimation} loop={true} /> : <p>Loading...</p>}
         </div>
-
-        <nav className="absolute top-0 left-0 w-full flex justify-between items-center px-10 py-4 bg-transparent text-black">
-          <h1 className="text-2xl font-bold">Learnify</h1>
-          <ul className="hidden md:flex space-x-6">
-            <li className="relative" ref={dropdownRef}>
-              <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="hover:text-gray-700">
-                Courses ▼
-              </button>
-              {isDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-64 bg-[#ebebeb] text-black rounded-lg shadow-lg z-50">
-                  <div className="grid grid-cols-2 gap-2 p-2">
-                    {[...Array(12).keys()].map((i) => (
-                      <button key={i} className="px-4 py-2 hover:bg-gray-200 text-left">
-                        Grade {i + 1}
-                      </button>
-                    ))}
-                    <button className="px-4 py-2 hover:bg-gray-200 text-left">JEE Mains</button>
-                    <button className="px-4 py-2 hover:bg-gray-200 text-left">JEE Advanced</button>
-                    <button className="px-4 py-2 hover:bg-gray-200 text-left">UPSC</button>
-                  </div>
-                </div>
-              )}
-            </li>
-            <li>
-              <button onClick={() => navigate("/explore")} className="hover:text-gray-700">
-                Explore
-              </button>
-            </li>
-            <li>
-              <button onClick={() => navigate("/contact")} className="hover:text-gray-700">
-                Contact Us
-              </button>
-            </li>
-            <li>
-              <button onClick={() => navigate("/donate")} className="hover:text-gray-700">
-                Donate
-              </button>
-            </li>
-          </ul>
-          <div className="space-x-4">
-            <motion.button
-              className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800"
-              whileHover={{ scale: 1.1 }}
-              onClick={() => navigate("/login")}
-            >
-              Log In
-            </motion.button>
-            <motion.button
-              className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800"
-              whileHover={{ scale: 1.1 }}
-              onClick={() => navigate("/signup")}
-            >
-              Sign Up
-            </motion.button>
-          </div>
-        </nav>
+ {/* Header */}
+ <Header />
 
         <motion.div
           className="max-w-3xl"
@@ -182,6 +131,7 @@ export default function MainPage() {
         </motion.div>
       </motion.div>
       {/* Explore Section with 3D Tilt Cards */}
+      <section id="explore">
       <div className="max-w-6xl mx-auto my-10 px-6 text-left">
         <h2 className="text-3xl font-bold mb-4">Explore Trending Topics</h2>
         <div
@@ -210,7 +160,9 @@ export default function MainPage() {
           ))}
         </div>
       </div>
+      </section>
       <div>
+      
       {/* ABOUT US SECTION */}
 <section
   id="about"
@@ -303,22 +255,8 @@ export default function MainPage() {
     </div>
 
       {/* Footer */}
-      <footer className="bg-gray-200 text-black py-6 text-left px-10">
-        <p>© 2025 Learnify. All rights reserved.</p>
-        <div className="mt-4">
-          <a href="#" className="text-gray-700 hover:text-black mx-2">
-            Privacy Policy
-          </a>{" "}
-          |{" "}
-          <a href="#" className="text-gray-700 hover:text-black mx-2">
-            Terms of Service
-          </a>{" "}
-          |{" "}
-          <a href="#" className="text-gray-700 hover:text-black mx-2">
-            Contact
-          </a>
-        </div>
-      </footer>
+       {/* Footer */}
+       <Footer />
       {/* Inline style to hide scrollbar for WebKit browsers */}
       <style>{`
         .no-scrollbar::-webkit-scrollbar {

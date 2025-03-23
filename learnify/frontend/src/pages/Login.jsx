@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Lottie from "lottie-react";
+import Header from "../components/Header.jsx";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -20,6 +21,9 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-[#F8FAFC]">
+      {/* Header */}
+       <Header />
+      
       {/* Left Side - Image (Full screen on small, 50% on large) */}
       <div className="w-full md:w-1/2 h-1/3 md:h-full flex items-center justify-center">
         {animationData ? (

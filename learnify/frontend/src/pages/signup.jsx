@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 import Lottie from "lottie-react";
+import Header from "../components/Header.jsx";
+import Footer from "../components/Footer.jsx";
 
 export default function SignUp() {
   const navigate = useNavigate(); // Initialize navigation
@@ -57,8 +59,10 @@ export default function SignUp() {
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-[#F8FAFC]">
+       {/* Header */}
+       <Header />
       {/* Left Side - Sign Up Form */}
-      <div className="w-full md:w-1/2 h-full flex items-center justify-center p-6">
+      <div className="w-full mt-10 md:w-1/2 h-full flex items-center justify-center p-6">
         <div className="w-full max-w-lg p-10 rounded-2xl shadow-lg bg-white">
           <h2 className="text-4xl font-bold mb-6 text-center">Sign Up</h2>
           <div className="flex justify-center mb-6">

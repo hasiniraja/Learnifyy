@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainPage from "./pages/MainPage"; // Import Main Page
 import Login from "./pages/Login"; // Import Login Page
 import SignUp from "./pages/SignUp";
+import Header from "./components/Header"; 
 import Donate from "./pages/Donate";
 
 export default function App() {
@@ -12,7 +13,8 @@ export default function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/donate" element={<Donate />} /> 
+        <Route path="/donate" element={<Donate />} />
+        <Route path="/header" element={<Header />} /> 
       </Routes>
     </Router>
   );

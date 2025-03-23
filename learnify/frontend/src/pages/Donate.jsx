@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import Header from "../components/Header.jsx";
 export default function DonatePage() {
   const [donation, setDonation] = useState(10);
   const [name, setName] = useState("");
@@ -14,8 +14,12 @@ export default function DonatePage() {
 
   return (
     <div className="h-screen overflow-y-auto bg-gray-100">
+       {/* Include Header at the top */}
+       <Header />
+       
       {/* Motivational Section with Rounded Bottom */}
-      <div className="relative bg-black text-white text-center py-40 px-4 rounded-b-[50%] md:rounded-b-[50%] lg:rounded-b-[30%]">
+      <div className="relative mt-15 bg-black text-white text-center py-40 px-4 rounded-b-[50%] md:rounded-b-[50%] lg:rounded-b-[30%]">
+      
         <h1 className="text-4xl font-extrabold">Make an Impact Today</h1>
         <p className="text-lg mt-3 max-w-3xl mx-auto">
           Your generosity fuels education, empowers young minds, and changes
