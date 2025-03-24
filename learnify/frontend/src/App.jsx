@@ -5,6 +5,8 @@ import Login from "./pages/Login"; // Import Login Page
 import SignUp from "./pages/SignUp";
 import Header from "./components/Header"; 
 import Donate from "./pages/Donate";
+import Profile from "./pages/Profile";
+
 
 export default function App() {
   return (
@@ -15,6 +17,7 @@ export default function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/donate" element={<Donate />} />
         <Route path="/header" element={<Header />} /> 
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );

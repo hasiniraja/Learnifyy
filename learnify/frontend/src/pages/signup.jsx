@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
+import { useNavigate } from "react-router-dom"; // For navigation
 import Lottie from "lottie-react";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 
 export default function SignUp() {
-  const navigate = useNavigate(); // Initialize navigation
-  const [userType, setUserType] = useState("learner");
+  const navigate = useNavigate();
+  const [userType, setUserType] = useState("learner"); // learner or teacher
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
     email: "",
-    phone: "",
+    phone_no: "",
     password: "",
     dob: "",
-    educationLevel: "",
-    subject: ""
+    education_lvl: "",
+    subject: "",
   });
   const [animationData, setAnimationData] = useState(null);
+  const [loading, setLoading] = useState(false); // Track form submission
+  const [error, setError] = useState(null); // Error handling
 
   useEffect(() => {
     fetch("/signup_video.json")
@@ -33,38 +35,50 @@ export default function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null); // Reset previous errors
+
+    const userPayload = {
+      ...formData,
+      role: userType, // Assign correct role (learner/teacher)
+    };
 
     try {
-      const response = await fetch("http://localhost:5000/api/signup", {
+      const response = await fetch("http://localhost:5000/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(userPayload),
       });
 
       const data = await response.json();
 
       if (response.ok) {
         alert("Signup Successful! 🎉 Redirecting to login...");
-        navigate("/login"); // Redirect to login page
+        navigate("/login");
       } else {
-        alert(`Signup Failed: ${data.message}`);
+        setError(data.error || "Signup failed. Please try again.");
       }
     } catch (error) {
       console.error("Error during signup:", error);
-      alert("Signup Failed: Server error");
+      setError("Signup failed due to a server error.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-[#F8FAFC]">
-       {/* Header */}
-       <Header />
+      {/* Header */}
+      <Header />
+
       {/* Left Side - Sign Up Form */}
       <div className="w-full mt-10 md:w-1/2 h-full flex items-center justify-center p-6">
         <div className="w-full max-w-lg p-10 rounded-2xl shadow-lg bg-white">
           <h2 className="text-4xl font-bold mb-6 text-center">Sign Up</h2>
+
+          {/* User Type Selection */}
           <div className="flex justify-center mb-6">
             <button 
               className={`px-5 py-2 text-lg font-semibold border-b-2 ${userType === "learner" ? "border-blue-600 text-blue-600" : "border-gray-300 text-gray-500"}`} 
@@ -79,24 +93,28 @@ export default function SignUp() {
               Teacher
             </button>
           </div>
+
+          {/* Signup Form */}
           <form onSubmit={handleSubmit}>
             <div className="mb-4 flex space-x-3">
-              <input type="text" name="firstName" placeholder="First Name" className="w-1/2 p-3 border rounded-lg" onChange={handleChange} required />
-              <input type="text" name="lastName" placeholder="Last Name" className="w-1/2 p-3 border rounded-lg" onChange={handleChange} required />
+              <input type="text" name="first_name" placeholder="First Name" className="w-1/2 p-3 border rounded-lg" onChange={handleChange} required />
+              <input type="text" name="last_name" placeholder="Last Name" className="w-1/2 p-3 border rounded-lg" onChange={handleChange} required />
             </div>
             <div className="mb-4">
               <input type="email" name="email" placeholder="Email" className="w-full p-3 border rounded-lg" onChange={handleChange} required />
             </div>
             <div className="mb-4">
-              <input type="tel" name="phone" placeholder="Phone Number" className="w-full p-3 border rounded-lg" onChange={handleChange} required />
+              <input type="tel" name="phone_no" placeholder="Phone Number" className="w-full p-3 border rounded-lg" onChange={handleChange} required />
             </div>
             <div className="mb-4">
               <input type="password" name="password" placeholder="Password" className="w-full p-3 border rounded-lg" onChange={handleChange} required />
             </div>
+
+            {/* Learner-Specific Fields */}
             {userType === "learner" && (
               <div className="mb-4 flex space-x-3">
                 <input type="date" name="dob" className="w-1/2 p-3 border rounded-lg" onChange={handleChange} required />
-                <select name="educationLevel" className="w-1/2 p-3 border rounded-lg" onChange={handleChange} required>
+                <select name="education_lvl" className="w-1/2 p-3 border rounded-lg" onChange={handleChange} required>
                   <option value="">Education Level</option>
                   <option value="High School">High School</option>
                   <option value="Undergraduate">Undergraduate</option>
@@ -104,15 +122,28 @@ export default function SignUp() {
                 </select>
               </div>
             )}
+
+            {/* Teacher-Specific Fields */}
             {userType === "teacher" && (
               <div className="mb-4">
                 <input type="text" name="subject" placeholder="Subject" className="w-full p-3 border rounded-lg" onChange={handleChange} required />
               </div>
             )}
-            <button type="submit" className="w-full bg-black text-white py-3 text-lg rounded-lg hover:bg-gray-600 transition">
-              Sign Up
+
+            {/* Error Message */}
+            {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
+            {/* Submit Button */}
+            <button 
+              type="submit" 
+              className="w-full bg-black text-white py-3 text-lg rounded-lg hover:bg-gray-600 transition"
+              disabled={loading}
+            >
+              {loading ? "Signing Up..." : "Sign Up"}
             </button>
           </form>
+
+          {/* Login Redirect */}
           <p className="mt-6 text-center text-lg text-gray-600">
             Already have an account? <a href="/login" className="text-black font-bold">Login</a>
           </p>
@@ -130,4 +161,5 @@ export default function SignUp() {
     </div>
   );
 }
+
 
