@@ -9,7 +9,7 @@ import { getFirestore } from "firebase/firestore";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBT2nhwyBF5qYvygUCkso0yFAh6Mhk8NQM",
+  apiKey: "AIzaSyCHwcA7OhLWkr4lbSA9mf1vMHiBQLCYIsg",
   authDomain: "learnify-a7d07.firebaseapp.com",
   projectId: "learnify-a7d07",
   storageBucket: "learnify-a7d07.firebasestorage.app",
