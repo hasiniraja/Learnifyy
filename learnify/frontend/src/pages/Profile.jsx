@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Sidebar from "../components/Sidebar"; // Adjust path if needed
+import Chatbot from "../components/Chatbot";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -43,6 +44,7 @@ const Profile = () => {
       <div style={{ marginLeft: "250px", padding: "20px" }}>
         <h1>Welcome, {userData ? `${userData.first_name.trim()} ${userData.last_name}` : "User"}!</h1>
       </div>
+      <Chatbot /> {/* Chatbot will appear at the bottom right corner */}
     </div>
   );
 };
