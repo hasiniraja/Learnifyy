@@ -6,6 +6,7 @@ import SignUp from "./pages/SignUp";
 import Header from "./components/Header"; 
 import Donate from "./pages/Donate";
 import Profile from "./pages/Profile";
+import Sidebar from "./components/Sidebar";
 
 
 export default function App() {

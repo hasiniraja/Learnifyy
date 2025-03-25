@@ -1,52 +1,50 @@
 import { useEffect, useState } from "react";
-import { auth, db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import Sidebar from "../components/Sidebar"; // Adjust path if needed
 
-export default function Profile() {
+const Profile = () => {
   const [userData, setUserData] = useState(null);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const auth = getAuth();
+  const db = getFirestore();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const user = auth.currentUser;
-      if (!user) {
-        navigate("/login"); // Redirect to login if not logged in
-        return;
-      }
+    const fetchUserData = async (uid) => {
+      if (!uid) return;
+      const userDocRef = doc(db, "Users", uid);
+      const userDoc = await getDoc(userDocRef);
 
-      try {
-        const userDoc = await getDoc(doc(db, "Users", user.uid));
-        if (userDoc.exists()) {
-          setUserData(userDoc.data());
-        } else {
-          console.error("User data not found!");
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+      if (userDoc.exists()) {
+        console.log("Fetched User Data:", userDoc.data());
+        setUserData(userDoc.data());
+      } else {
+        console.log("No user document found in Firestore.");
       }
+      setLoading(false);
     };
 
-    fetchUserData();
-  }, [navigate]);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchUserData(user.uid);
+      } else {
+        setLoading(false);
+      }
+    });
 
-  if (!userData) {
-    return <h2>Loading...</h2>;
-  }
+    return () => unsubscribe();
+  }, [db]);
+
+  if (loading) return <h1>Loading...</h1>;
 
   return (
-    <div className="max-w-md mx-auto p-4 border rounded shadow-lg mt-10 bg-white">
-      <h2 className="text-xl font-bold">User Profile</h2>
-      <p><strong>Name:</strong> {userData.first_name} {userData.last_name}</p>
-      <p><strong>Email:</strong> {auth.currentUser.email}</p>
-      <p><strong>Role:</strong> {userData.role}</p>
-      <p><strong>Phone:</strong> {userData.phone_no}</p>
-      <p><strong>DOB:</strong> {userData.dob.toDate().toLocaleDateString()}</p>
-      <p><strong>Education Level:</strong> {userData.education_lvl}</p>
-      <button onClick={() => auth.signOut().then(() => navigate("/login"))} className="mt-4 px-4 py-2 bg-red-500 text-white rounded">
-        Logout
-      </button>
+    <div style={{ display: "flex" }}>
+      <Sidebar />
+      <div style={{ marginLeft: "250px", padding: "20px" }}>
+        <h1>Welcome, {userData ? `${userData.first_name.trim()} ${userData.last_name}` : "User"}!</h1>
+      </div>
     </div>
   );
-}
+};
 
+export default Profile;
