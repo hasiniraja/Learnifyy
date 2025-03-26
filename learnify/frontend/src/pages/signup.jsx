@@ -18,8 +18,8 @@ export default function SignUp() {
     subject: "",
   });
   const [animationData, setAnimationData] = useState(null);
-  const [loading, setLoading] = useState(false); // Track form submission
-  const [error, setError] = useState(null); // Error handling
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch("/signup_video.json")
@@ -44,7 +44,7 @@ export default function SignUp() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/signup", {
+      const response = await fetch("http://localhost:5001/signup", { // ✅ Fixed API URL
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +70,6 @@ export default function SignUp() {
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-[#F8FAFC]">
-      {/* Header */}
       <Header />
 
       {/* Left Side - Sign Up Form */}
@@ -81,13 +80,17 @@ export default function SignUp() {
           {/* User Type Selection */}
           <div className="flex justify-center mb-6">
             <button 
-              className={`px-5 py-2 text-lg font-semibold border-b-2 ${userType === "learner" ? "border-blue-600 text-blue-600" : "border-gray-300 text-gray-500"}`} 
+              className={`px-5 py-2 text-lg font-semibold border-b-2 ${
+                userType === "learner" ? "border-blue-600 text-blue-600" : "border-gray-300 text-gray-500"
+              }`} 
               onClick={() => setUserType("learner")}
             >
               Learner
             </button>
             <button 
-              className={`px-5 py-2 text-lg font-semibold border-b-2 ${userType === "teacher" ? "border-blue-600 text-blue-600" : "border-gray-300 text-gray-500"}`} 
+              className={`px-5 py-2 text-lg font-semibold border-b-2 ${
+                userType === "teacher" ? "border-blue-600 text-blue-600" : "border-gray-300 text-gray-500"
+              }`} 
               onClick={() => setUserType("teacher")}
             >
               Teacher
@@ -116,9 +119,21 @@ export default function SignUp() {
                 <input type="date" name="dob" className="w-1/2 p-3 border rounded-lg" onChange={handleChange} required />
                 <select name="education_lvl" className="w-1/2 p-3 border rounded-lg" onChange={handleChange} required>
                   <option value="">Education Level</option>
-                  <option value="High School">High School</option>
-                  <option value="Undergraduate">Undergraduate</option>
-                  <option value="Graduate">Graduate</option>
+                  <option value="lvl1">Grade 1</option>
+                  <option value="lvl2">Grade 2</option>
+                  <option value="lvl3">Grade 3</option>
+                  <option value="lvl4">Grade 4</option>
+                  <option value="lvl5">Grade 5</option>
+                  <option value="lvl6">Grade 6</option>
+                  <option value="lvl7">Grade 7</option>
+                  <option value="lvl8">Grade 8</option>
+                  <option value="lvl9">Grade 9</option>
+                  <option value="lvl10">Grade 10</option>
+                  <option value="lvl11">Grade 11</option>
+                  <option value="lvl12">Grade 12</option>
+                  <option value="lvlmains">JEE Mains</option>
+                  <option value="lvladv">JEE Advanced</option>
+                  <option value="lvlupsc">UPSC</option>
                 </select>
               </div>
             )}
@@ -161,5 +176,3 @@ export default function SignUp() {
     </div>
   );
 }
-
-

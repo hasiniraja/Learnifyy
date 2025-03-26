@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-<<<<<<< HEAD
-import Sidebar from "../components/Sidebar"; // Adjust path if needed
+
+import Sidebar from "../components/Sidebar"; // Ensure the path is correct
 import Chatbot from "../components/Chatbot";
-=======
-import Sidebar from "../components/Sidebar";
->>>>>>> 3391625bc82a3a96518ba7bbc7ed90f3b1d0ecae
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -19,7 +16,7 @@ const Profile = () => {
       if (!uid) return;
       const userDocRef = doc(db, "Users", uid);
       const userDoc = await getDoc(userDocRef);
-      
+
       if (userDoc.exists()) {
         setUserData(userDoc.data());
       }
@@ -43,64 +40,72 @@ const Profile = () => {
     <div className="flex">
       <Sidebar />
       <div className="flex-1 p-6">
-        <div className="bg-pink-100 ml-10 p-6 rounded-2xl flex items-center gap-6 shadow-md">
-          <img 
-            src="https://cdn.vectorstock.com/i/500p/07/06/cute-little-girl-playing-laptop-cartoon-vector-54570706.avif" 
-            alt="User" 
-            className="w-20 h-20 rounded-full" 
-          />
-          <div>
-            <h1 className="text-2xl font-bold text-pink-700">Welcome back, {userData?.first_name || "User"}!</h1>
-            <p className="text-gray-600 mt-2">
-              You've learned <strong>{userData?.progress || "0%"}</strong> of your goal this week! Keep it up and improve your results!
-            </p>
+        {/* Welcome Banner */}
+<div className="bg-pink-100 ml-10 p-8 min-h-70 rounded-2xl flex items-center gap-6 shadow-md">
+  <img 
+    src="https://cdn.vectorstock.com/i/500p/07/06/cute-little-girl-playing-laptop-cartoon-vector-54570706.avif" 
+    alt="User" 
+    className="w-30 h-30 rounded-full" 
+  />
+  <div>
+    <h1 className="text-6xl font-bold text-pink-700">
+      Welcome back, {userData?.first_name || "User"}!
+    </h1>
+    <p className="text-gray-600 mt-3 text-lg">
+      You've learned <strong>{userData?.progress || "0%"}</strong> of your goal this week!  
+      Keep it up and improve your results! 🚀
+    </p>
+  </div>
+</div>
+
+
+        {/* Dashboard Sections */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+  {/* Earned Badges */}
+  <div className="p-4 bg-white shadow-md rounded-xl min-h-[200px] flex flex-col ml-10">
+    <h2 className="text-xl font-bold">🏆 Earned Badges</h2>
+    <div className="flex gap-4 mt-3">
+      {userData?.badges?.length > 0 ? (
+        userData.badges.map((badge, index) => (
+          <div key={index} className="bg-yellow-200 p-2 rounded-md text-center text-sm">
+            {badge}
           </div>
-        </div>
+        ))
+      ) : (
+        <p>No badges earned yet.</p>
+      )}
+    </div>
+  </div>
 
-        {/* Earned Badges */}
-        <div className="mt-6 p-4 bg-white shadow-md rounded-xl">
-          <h2 className="text-xl font-bold">🏆 Earned Badges</h2>
-          <div className="flex gap-4 mt-3">
-            {userData?.badges?.length > 0 ? (
-              userData.badges.map((badge, index) => (
-                <div key={index} className="bg-yellow-200 p-2 rounded-md text-center text-sm">
-                  {badge}
-                </div>
-              ))
-            ) : (
-              <p>No badges earned yet.</p>
-            )}
-          </div>
-        </div>
+  {/* Completed Videos */}
+  <div className="p-4 bg-white shadow-md rounded-xl">
+    <h2 className="text-xl font-bold">🎥 Completed Videos</h2>
+    <p className="mt-2">{userData?.completedVideos || 0} lessons completed</p>
+  </div>
 
-        {/* Completed Videos */}
-        <div className="mt-6 p-4 bg-white shadow-md rounded-xl">
-          <h2 className="text-xl font-bold">🎥 Completed Videos</h2>
-          <p className="mt-2">{userData?.completedVideos || 0} lessons completed</p>
-        </div>
+  {/* Continue Learning */}
+  <div className="p-4 bg-white shadow-md rounded-xl">
+    <h2 className="text-xl font-bold">📚 Continue Learning</h2>
+    <p className="mt-2">Next Lesson: {userData?.nextLesson || "No upcoming lesson"}</p>
+    <button className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg">Continue</button>
+  </div>
 
-        {/* Continue Learning */}
-        <div className="mt-6 p-4 bg-white shadow-md rounded-xl">
-          <h2 className="text-xl font-bold">📚 Continue Learning</h2>
-          <p className="mt-2">Next Lesson: {userData?.nextLesson || "No upcoming lesson"}</p>
-          <button className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg">Continue</button>
-        </div>
-
-        {/* Upcoming Assignments */}
-        <div className="mt-6 p-4 bg-white shadow-md rounded-xl">
-          <h2 className="text-xl font-bold">📝 Upcoming Assignments</h2>
-          <ul className="mt-2">
-            {userData?.assignments?.length > 0 ? (
-              userData.assignments.map((assignment, index) => (
-                <li key={index} className="text-gray-700">{assignment.title} - Due {assignment.dueDate}</li>
-              ))
-            ) : (
-              <p>No upcoming assignments.</p>
-            )}
-          </ul>
-        </div>
+  {/* Upcoming Assignments */}
+  <div className="p-4 bg-white shadow-md rounded-xl">
+    <h2 className="text-xl font-bold">📝 Upcoming Assignments</h2>
+    <ul className="mt-2">
+      {userData?.assignments?.length > 0 ? (
+        userData.assignments.map((assignment, index) => (
+          <li key={index} className="text-gray-700">{assignment.title} - Due {assignment.dueDate}</li>
+        ))
+      ) : (
+        <p>No upcoming assignments.</p>
+      )}
+    </ul>
+  </div>
+</div>
       </div>
-      <Chatbot /> {/* Chatbot will appear at the bottom right corner */}
+      <Chatbot /> {/* Chatbot at bottom-right */}
     </div>
   );
 };
