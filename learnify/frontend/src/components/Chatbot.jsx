@@ -22,7 +22,11 @@ const Chatbot = () => {
       });
 
       const data = await response.json();
-      setMessages([...messages, { text: input, sender: "user" }, { text: data.response, sender: "bot" }]);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: input, sender: "user" },
+        { text: data.response, sender: "bot" }
+      ]);
       setInput("");
     } catch (error) {
       console.error("Error:", error);
@@ -31,7 +35,7 @@ const Chatbot = () => {
     }
   };
 
-return (
+  return (
     <div>
       {/* Floating Text Above Button */}
       {!isOpen && (
@@ -58,7 +62,7 @@ return (
       {/* Chatbox UI */}
       {isOpen && (
         <div style={{
-          position: "fixed", bottom: "80px", right: "20px", width: "400px", backgroundColor: "#000",
+          position: "fixed", bottom: "80px", right: "20px", width: "300px", backgroundColor: "#000",
           boxShadow: "0px 0px 10px rgba(255,255,255,0.2)", borderRadius: "10px", padding: "10px",
           display: "flex", flexDirection: "column", color: "white"
         }}>
@@ -84,24 +88,26 @@ return (
               onChange={(e) => setInput(e.target.value)}
               style={{ flex: "1", padding: "5px", border: "1px solid #555", borderRadius: "5px", backgroundColor: "#222", color: "white" }} 
               placeholder="Type a message..."
+              disabled={loading}
             />
             <button 
               onClick={handleSend} 
               style={{ marginLeft: "5px", backgroundColor: "#222", color: "white", border: "1px solid white", padding: "5px 10px", borderRadius: "5px" }}
+              disabled={loading}
             >
-              Send
+              {loading ? "..." : "Send"}
             </button>
           </div>
         </div>
       )}
     </div>
   );
-
-
 };
 
 export default Chatbot;
 
+
+  
 
 
 

@@ -1,9 +1,21 @@
 import { useState } from "react";
 import { Menu, X, LogOut } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { getAuth, signOut } from "firebase/auth";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate(); // React Router's navigation
+
+  const handleLogout = async () => {
+    const auth = getAuth(); // Get Firebase Auth instance
+    try {
+      await signOut(auth); // Sign out the user
+      navigate("/"); // Redirect to home page
+    } catch (error) {
+      console.error("Logout failed:", error.message);
+    }
+  };
 
   return (
     <div className="relative">
@@ -47,7 +59,10 @@ export default function Sidebar() {
 
         {/* Logout Button */}
         <div className="absolute bottom-4 left-5 w-full">
-          <button className="flex items-center text-red-600 hover:text-red-800 text-lg">
+          <button
+            onClick={handleLogout}
+            className="flex items-center text-red-600 hover:text-red-800 text-lg"
+          >
             <LogOut size={22} className="mr-2" /> Logout
           </button>
         </div>
