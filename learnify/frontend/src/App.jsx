@@ -8,7 +8,10 @@ import Donate from "./pages/Donate";
 import Profile from "./pages/Profile";
 import Sidebar from "./components/Sidebar";
 import CommunityPage from "./pages/CommunityPage";
-import ChatRoom from "./pages/ChatRoom"
+import Assignment from "./pages/Assignment";
+import ChatRoom from "./pages/ChatRoom";
+import Resources from "./pages/Resources";
+
 
 
 
@@ -24,6 +27,8 @@ export default function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/community/:chatId" element={<ChatRoom />} />
+        <Route path="/assignments" element={<Assignment />} />
+        <Route path="/resources" element={<Resources />} />
       </Routes>
     </Router>
   );
