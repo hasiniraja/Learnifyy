@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-<<<<<<< HEAD
-import Sidebar from "../components/Sidebar"; // Adjust path if needed
 import Chatbot from "../components/Chatbot";
-=======
 import Sidebar from "../components/Sidebar";
->>>>>>> 3391625bc82a3a96518ba7bbc7ed90f3b1d0ecae
+
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -100,7 +97,7 @@ const Profile = () => {
           </ul>
         </div>
       </div>
-      <Chatbot /> {/* Chatbot will appear at the bottom right corner */}
+      <Chatbot />
     </div>
   );
 };

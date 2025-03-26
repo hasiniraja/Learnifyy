@@ -7,6 +7,9 @@ import Header from "./components/Header";
 import Donate from "./pages/Donate";
 import Profile from "./pages/Profile";
 import Sidebar from "./components/Sidebar";
+import CommunityPage from "./pages/CommunityPage";
+import ChatRoom from "./pages/ChatRoom"
+
 
 
 export default function App() {
@@ -19,6 +22,8 @@ export default function App() {
         <Route path="/donate" element={<Donate />} />
         <Route path="/header" element={<Header />} /> 
         <Route path="/profile" element={<Profile />} />
+        <Route path="/community" element={<CommunityPage />} />
+        <Route path="/community/:chatId" element={<ChatRoom />} />
       </Routes>
     </Router>
   );

@@ -33,15 +33,16 @@ export default function Sidebar() {
 
         {/* Sidebar Links */}
         <ul className="p-5 space-y-4 text-lg">
-          <li><Link to="/" className="hover:text-blue-500">🏠 Dashboard</Link></li>
-          <li><Link to="/grades" className="hover:text-blue-500">📊 Grades</Link></li>
-          <li><Link to="/courses" className="hover:text-blue-500">📚 Courses</Link></li>
-          <li><Link to="/assignments" className="hover:text-blue-500">📝 Assignments</Link></li>
-          <li><Link to="/schedule" className="hover:text-blue-500">📅 Schedule</Link></li>
-          <li><Link to="/resources" className="hover:text-blue-500">📂 Resources</Link></li>
-          <li><Link to="/messages" className="hover:text-blue-500">💬 Messages</Link></li>
-          <li><Link to="/profile" className="hover:text-blue-500">👤 Profile</Link></li>
-          <li><Link to="/settings" className="hover:text-blue-500">⚙️ Settings</Link></li>
+          <li><Link to="/" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>🏠 Dashboard</Link></li>
+          <li><Link to="/grades" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📊 Grades</Link></li>
+          <li><Link to="/courses" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📚 Courses</Link></li>
+          <li><Link to="/assignments" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📝 Assignments</Link></li>
+          <li><Link to="/schedule" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📅 Schedule</Link></li>
+          <li><Link to="/resources" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📂 Resources</Link></li>
+          <li><Link to="/community" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>💬 Community</Link></li>
+          <li><Link to="/quizzes" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>❔ Quizzes</Link></li>
+          <li><Link to="/profile" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>👤 Profile</Link></li>
+          <li><Link to="/settings" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>⚙️ Settings</Link></li>
         </ul>
 
         {/* Logout Button */}
