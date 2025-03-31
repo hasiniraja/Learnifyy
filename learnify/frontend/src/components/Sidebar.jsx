@@ -37,11 +37,15 @@ export default function Sidebar() {
       >
         {/* Sidebar Header with Close Button */}
         <div className="p-5 flex items-center justify-between border-b">
-          <span className="text-lg font-bold">Learnify</span>
-          <button onClick={() => setIsOpen(false)}>
-            <X size={24} className="text-gray-700 hover:text-black" />
-          </button>
-        </div>
+  <div className="flex items-center space-x-1">
+    <img src="/learnify1.png" alt="Logo" className="h-7 w-auto -mt-1" />
+    <span className="text-2xl font-bold tracking-wide">earnify</span>
+  </div>
+  <button onClick={() => setIsOpen(false)}>
+    <X size={24} className="text-gray-700 hover:text-black" />
+  </button>
+</div>
+
 
         {/* Sidebar Links */}
         <ul className="p-5 space-y-4 text-lg">
