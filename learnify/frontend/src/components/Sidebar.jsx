@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Menu, X, LogOut } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -37,11 +38,15 @@ export default function Sidebar() {
       >
         {/* Sidebar Header with Close Button */}
         <div className="p-5 flex items-center justify-between border-b">
-          <span className="text-lg font-bold">Learnify</span>
-          <button onClick={() => setIsOpen(false)}>
-            <X size={24} className="text-gray-700 hover:text-black" />
-          </button>
-        </div>
+  <div className="flex items-center space-x-1">
+    <img src="/learnify1.png" alt="Logo" className="h-7 w-auto -mt-1" />
+    <span className="text-2xl font-bold tracking-wide">earnify</span>
+  </div>
+  <button onClick={() => setIsOpen(false)}>
+    <X size={24} className="text-gray-700 hover:text-black" />
+  </button>
+</div>
+
 
         {/* Sidebar Links */}
         <ul className="p-5 space-y-4 text-lg">
@@ -49,10 +54,10 @@ export default function Sidebar() {
           <li><Link to="/grades" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📊 Grades</Link></li>
           <li><Link to="/courses" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📚 Courses</Link></li>
           <li><Link to="/assignments" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📝 Assignments</Link></li>
-          <li><Link to="/schedule" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📅 Live Classes</Link></li>
+          <li><Link to="/schedule" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📅 Schedule</Link></li>
           <li><Link to="/resources" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📂 Resources</Link></li>
           <li><Link to="/community" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>💬 Community</Link></li>
-          <li><Link to="/quiz" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>❔ Quizzes</Link></li>
+          <li><Link to="/quizzes" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>❔ Quizzes</Link></li>
           <li><Link to="/profile" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>👤 Profile</Link></li>
           <li><Link to="/settings" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>⚙️ Settings</Link></li>
         </ul>

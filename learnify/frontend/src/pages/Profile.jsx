@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -86,7 +87,7 @@ const Profile = () => {
   <div className="p-4 bg-white shadow-md rounded-xl">
     <h2 className="text-xl font-bold">📚 Continue Learning</h2>
     <p className="mt-2">Next Lesson: {userData?.nextLesson || "No upcoming lesson"}</p>
-    <button className="mt-2 bg-black text-white px-4 py-2 rounded-lg">Continue</button>
+    <button className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg">Continue</button>
   </div>
 
   {/* Upcoming Assignments */}

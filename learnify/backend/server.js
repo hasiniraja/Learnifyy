@@ -132,7 +132,34 @@ app.post("/generate-quiz", async (req, res) => {
   }
 });
 
+// Google Books API Route
+const googleBooksApiKey = process.env.GOOGLE_BOOKS_API_KEY;
+if (!googleBooksApiKey) {
+  console.error("GOOGLE_BOOKS_API_KEY is not set in your .env file.");
+  process.exit(1);
+}
 
+app.get("/api/books/search", async (req, res) => {
+  try {
+    const query = req.query.q || req.query.query;
+    if (!query) {
+      return res.status(400).json({ error: "Query parameter is required" });
+    }
+
+    const googleBooksUrl = `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${googleBooksApiKey}`;
+    const response = await fetch(googleBooksUrl);
+    const data = await response.json();
+
+    if (!data.items) {
+      return res.status(404).json({ error: "No books found" });
+    }
+
+    res.json(data.items);
+  } catch (error) {
+    console.error("Error fetching books:", error);
+    res.status(500).json({ error: "Failed to fetch books" });
+  }
+});
 
 /* API to handle user signup (unchanged) */
 app.post("/signup", async (req, res) => {
@@ -201,6 +228,4 @@ app.post("/chatbot", async (req, res) => {
 // Start the server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`🔥 Server running on port ${PORT}`));
-
-
 

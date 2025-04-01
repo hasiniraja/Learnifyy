@@ -20,13 +20,14 @@ export default function Header() {
 
   return (
     <nav className="absolute top-0 left-0 w-full flex justify-between items-center px-10 py-4 bg-transparent text-black z-50">
-      {/* Fix: Clicking "Learnify" now navigates to Home */}
-      <h1 
-        className="text-2xl font-bold cursor-pointer"
-        onClick={() => navigate("/")}
-      >
-        Learnify
-      </h1>
+  {/* Clicking "Learnify" navigates to Home */}
+  <div className="flex items-center space-x-1 cursor-pointer" onClick={() => navigate("/")}>
+    <img src="/learnify1.png" alt="Logo" className="h-7 w-auto -mt-1" />  
+    <h1 className="text-2xl font-bold tracking-wide">earnify</h1>
+  </div>
+
+
+
 
       <ul className="hidden md:flex space-x-6">
         <li className="relative" ref={dropdownRef}>
