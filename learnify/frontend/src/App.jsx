@@ -11,6 +11,7 @@ import CommunityPage from "./pages/CommunityPage";
 import Assignment from "./pages/Assignment";
 import ChatRoom from "./pages/ChatRoom";
 import Resources from "./pages/Resources";
+import QuizPage from "./pages/QuizPage";
 
 
 
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/community/:chatId" element={<ChatRoom />} />
         <Route path="/assignments" element={<Assignment />} />
         <Route path="/resources" element={<Resources />} />
+         <Route path="/quiz" element={<QuizPage />} />
       </Routes>
     </Router>
   );

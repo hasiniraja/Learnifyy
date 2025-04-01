@@ -62,7 +62,7 @@ const Chatbot = () => {
       {/* Chatbox UI */}
       {isOpen && (
         <div style={{
-          position: "fixed", bottom: "80px", right: "20px", width: "300px", backgroundColor: "#000",
+          position: "fixed", bottom: "80px", right: "20px", width: "400px", backgroundColor: "#000",
           boxShadow: "0px 0px 10px rgba(255,255,255,0.2)", borderRadius: "10px", padding: "10px",
           display: "flex", flexDirection: "column", color: "white"
         }}>

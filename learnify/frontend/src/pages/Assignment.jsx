@@ -37,7 +37,7 @@ const Assignments = () => {
   return (
     <div className="min-h-screen p-8 bg-gray-100">
         <Sidebar />
-      <h1 className="text-4xl font-bold text-center mb-6">📚 Assignments</h1>
+      <h1 className="text-4xl font-bold text-center mb-6"> Assignments</h1>
 
       {/* Progress Bar */}
       <div className="bg-white p-4 rounded-lg shadow-md mb-6">
@@ -103,7 +103,7 @@ const Assignments = () => {
         <h2 className="text-2xl font-bold mb-4">📂 Submit an Assignment</h2>
         <input type="file" onChange={handleFileChange} className="p-2 border rounded-lg" />
         {file && <p className="mt-2 text-sm text-gray-600">File selected: {file.name}</p>}
-        <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Upload</button>
+        <button className="mt-4 bg-black text-white px-4 py-2 rounded-lg">Upload</button>
       </div>
     </div>
   );
