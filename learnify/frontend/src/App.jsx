@@ -12,6 +12,9 @@ import Assignment from "./pages/Assignment";
 import ChatRoom from "./pages/ChatRoom";
 import Resources from "./pages/Resources";
 import QuizPage from "./pages/QuizPage";
+import Teacher from "./pages/Teacher";
+import VideoResources from "./pages/VideoResources";
+import GradePage from "./pages/GradePage";
 
 
 
@@ -31,6 +34,9 @@ export default function App() {
         <Route path="/assignments" element={<Assignment />} />
         <Route path="/resources" element={<Resources />} />
          <Route path="/quiz" element={<QuizPage />} />
+         <Route path="/teacher" element={<Teacher />} />
+         <Route path="/video-resources" element={<VideoResources />} />
+         <Route path="/gradepage" element={<GradePage />} />
       </Routes>
     </Router>
   );

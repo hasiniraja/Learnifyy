@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase"; // Import Firebase auth
 import Lottie from "lottie-react";
 import Header from "../components/Header.jsx";
+import { getFirestore, doc, getDoc } from "firebase/firestore"; // Firebase Firestore imports
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -11,6 +12,7 @@ export default function LoginPage() {
   const [error, setError] = useState(""); 
   const [animationData, setAnimationData] = useState(null);
   const navigate = useNavigate(); // 🔥 To navigate after login
+  const db = getFirestore(); // Initialize Firestore
 
   useEffect(() => {
     fetch("/login_video.json")
@@ -30,8 +32,27 @@ export default function LoginPage() {
 
     try {
       // 🔥 Firebase authentication
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate("/profile"); // ✅ Redirect to Profile page
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Fetch user data from Firestore to check role
+      const userDocRef = doc(db, "Users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+      
+      if (!userDoc.exists()) {
+        setError("User data not found.");
+        return;
+      }
+
+      const userData = userDoc.data();
+      if (userData.role === "teacher") {
+        // Redirect to the teacher dashboard
+        navigate("/teacher");
+      } else {
+        // Redirect to profile page for other roles (e.g., student)
+        navigate("/profile");
+      }
+      
     } catch (error) {
       setError(error.message); // Show Firebase error message
     }
@@ -94,9 +115,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-
-
-
-
-

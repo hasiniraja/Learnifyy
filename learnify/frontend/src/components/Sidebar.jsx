@@ -51,7 +51,7 @@ export default function Sidebar() {
         {/* Sidebar Links */}
         <ul className="p-5 space-y-4 text-lg">
           <li><Link to="/" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>🏠 Dashboard</Link></li>
-          <li><Link to="/grades" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📊 Grades</Link></li>
+          <li><Link to="/gradepage" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📊 Grades</Link></li>
           <li><Link to="/courses" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📚 Courses</Link></li>
           <li><Link to="/assignments" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📝 Assignments</Link></li>
           <li><Link to="/schedule" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📅 Schedule</Link></li>
@@ -60,6 +60,11 @@ export default function Sidebar() {
           <li><Link to="/quizzes" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>❔ Quizzes</Link></li>
           <li><Link to="/profile" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>👤 Profile</Link></li>
           <li><Link to="/settings" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>⚙️ Settings</Link></li>
+          <li><Link to="/video-resources" className="hover:text-blue-500" onClick={() => setIsOpen(false)} >  🎥 Video Resources</Link></li>
+
+          
+          
+
         </ul>
 
         {/* Logout Button */}
