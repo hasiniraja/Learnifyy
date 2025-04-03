@@ -17,6 +17,8 @@ app.use(cors({
   credentials: true
 }));
 app.use(bodyParser.json());
+app.use(cors());
+app.use(express.json());
 
 // Initialize Firebase Admin SDK
 const serviceAccount = require("./serviceAccountKey.json");
@@ -25,6 +27,10 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
+
+const API_KEY = process.env.GOOGLE_API_KEY;
+const CX_CODE = process.env.GOOGLE_CX_CODE;
+
 
 // Securely load your Gemini API key from the environment variables
 const apiKey = process.env.GEMINI_API_KEY;
@@ -71,6 +77,26 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro", apiVersion: "v
 app.get("/", (req, res) => {
   res.send("Server is running!");
 });
+
+//news
+app.get("/search", async (req, res) => {
+    try {
+        const query = req.query.q; // Get search term from frontend
+        if (!query) {
+            return res.status(400).json({ error: "Search query is required" });
+        }
+
+        const url = `https://www.googleapis.com/customsearch/v1?q=${query}&cx=${CX_CODE}&key=${API_KEY}`;
+        const response = await axios.get(url);
+
+        res.json(response.data);
+    } catch (error) {
+        console.error("Error fetching news:", error.message);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+//quiz
 
 app.post("/generate-quiz", async (req, res) => {
   try {

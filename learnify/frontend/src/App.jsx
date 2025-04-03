@@ -15,6 +15,8 @@ import QuizPage from "./pages/QuizPage";
 import Teacher from "./pages/Teacher";
 import VideoResources from "./pages/VideoResources";
 import GradePage from "./pages/GradePage";
+import NewsSection from "./pages/NewsFeed";
+import NewsFeed from "./pages/NewsFeed";
 
 
 
@@ -33,10 +35,11 @@ export default function App() {
         <Route path="/community/:chatId" element={<ChatRoom />} />
         <Route path="/assignments" element={<Assignment />} />
         <Route path="/resources" element={<Resources />} />
-         <Route path="/quiz" element={<QuizPage />} />
-         <Route path="/teacher" element={<Teacher />} />
-         <Route path="/video-resources" element={<VideoResources />} />
-         <Route path="/gradepage" element={<GradePage />} />
+        <Route path="/quiz" element={<QuizPage />} />
+        <Route path="/teacher" element={<Teacher />} />
+        <Route path="/video-resources" element={<VideoResources />} />
+        <Route path="/gradepage" element={<GradePage />} />
+        <Route path="/news" element={<NewsFeed />} />
       </Routes>
     </Router>
   );
