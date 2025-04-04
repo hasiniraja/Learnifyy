@@ -15,7 +15,6 @@ import QuizPage from "./pages/QuizPage";
 import Teacher from "./pages/Teacher";
 import VideoResources from "./pages/VideoResources";
 import GradePage from "./pages/GradePage";
-import NewsSection from "./pages/NewsFeed";
 import NewsFeed from "./pages/NewsFeed";
 
 
