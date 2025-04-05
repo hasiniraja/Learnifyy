@@ -17,6 +17,7 @@ import VideoResources from "./pages/VideoResources";
 import GradePage from "./pages/GradePage";
 import NewsSection from "./pages/NewsFeed";
 import NewsFeed from "./pages/NewsFeed";
+import Courses from "./pages/Courses";
 
 
 
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="/video-resources" element={<VideoResources />} />
         <Route path="/gradepage" element={<GradePage />} />
         <Route path="/news" element={<NewsFeed />} />
+        <Route path="/courses" element={<Courses />} />
       </Routes>
     </Router>
   );
