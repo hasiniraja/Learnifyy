@@ -1,10 +1,13 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const admin = require("firebase-admin");
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const { PredictionServiceClient } = require("@google-cloud/aiplatform");
+import dotenv from "dotenv";
+dotenv.config();
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import admin from "firebase-admin";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { PredictionServiceClient } from "@google-cloud/aiplatform"; // ✅ FIXED
+import axios from "axios";
+import serviceAccount from "./serviceAccountKey.json" assert { type: "json" };
 
 
 const app = express();
@@ -16,12 +19,12 @@ app.use(cors({
   allowedHeaders: "Content-Type,Authorization",
   credentials: true
 }));
+
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
 
 // Initialize Firebase Admin SDK
-const serviceAccount = require("./serviceAccountKey.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
@@ -31,42 +34,18 @@ const db = admin.firestore();
 const API_KEY = process.env.GOOGLE_API_KEY;
 const CX_CODE = process.env.GOOGLE_CX_CODE;
 
+const API_URL = `https://us-central1-aiplatform.googleapis.com/v1/projects/${process.env.GOOGLE_PROJECT_ID}/locations/us-central1/publishers/google/models/${process.env.VERTEX_MODEL_NAME}:predict`;
 
 // Securely load your Gemini API key from the environment variables
 const apiKey = process.env.GEMINI_API_KEY;
-const vertexApiEndpoint = process.env.VERTEX_AI_ENDPOINT;
-const projectId = process.env.GCP_PROJECT_ID;
 if (!apiKey) {
   console.error("GEMINI_API_KEY is not set in your .env file.");
   process.exit(1);
 }
-if (!projectId || !vertexApiEndpoint) {
-  console.error("GCP_PROJECT_ID or VERTEX_AI_ENDPOINT is missing in your .env file.");
-  process.exit(1);
-}
-
-const apiKey1 = process.env.VERTEX_AI_KEY;
-if (!apiKey1) {
-  console.error("Missing Vertex AI API Key");
-  process.exit(1);
-}
-
-// Correctly initialize the Vertex AI client
-const vertexClient = new PredictionServiceClient({
-  apiEndpoint: vertexApiEndpoint,
-  keyFilename: "./serviceAccountKey.json", // Ensure this file exists
-});
 
 // Initialize GoogleGenerativeAI with your API key
-const genAI = new GoogleGenerativeAI(apiKey1);
+const genAI = new GoogleGenerativeAI(apiKey);
 
-// Initialize Vertex AI Client
-const client = new PredictionServiceClient({
-  apiEndpoint: vertexApiEndpoint,
-  keyFilename: "./serviceAccountKey.json",
-});
-
-const modelEndpoint = `projects/${projectId}/locations/us-central1/models/text-bison@001`;
 
 
 // IMPORTANT: Set the model and API version. Adjust if necessary.
@@ -97,66 +76,27 @@ app.get("/search", async (req, res) => {
 });
 
 //quiz
-
 app.post("/generate-quiz", async (req, res) => {
-  try {
-    const { topic } = req.body;
-    if (!topic) {
-      console.error("❌ Error: No topic provided in request body");
-      return res.status(400).json({ error: "Please provide a topic for the quiz." });
-    }
-
-    console.log(`📝 Generating quiz for topic: ${topic}`);
-
-    // Print environment variables
-    console.log("🔧 ENV CONFIG:");
-    console.log("VERTEX_AI_ENDPOINT:", vertexApiEndpoint);
-    console.log("GCP_PROJECT_ID:", process.env.GCP_PROJECT_ID);
-    console.log("Model Endpoint:", modelEndpoint);
-
-    // Prepare input prompt
-    const prompt = `Generate a multiple-choice quiz on "${topic}" with 5 questions.
-      Each question should have 4 options and one correct answer.
-      Provide explanations for correct answers.
-      Return JSON format:
-      { "questions": [ { "question": "...", "options": ["A", "B", "C", "D"], "correctAnswer": "...", "explanation": "..." } ] }`;
-
-    const request = {
-      endpoint: modelEndpoint,
-      instances: [{ content: prompt }],  // FIXED: 'prompt' should be 'content'
-      parameters: { temperature: 0.7, maxOutputTokens: 1024, topK: 40, topP: 0.8 },
-    };
-
-    console.log("📡 Sending request to Vertex AI:", JSON.stringify(request, null, 2));
-
-    // Call Vertex AI
-    const [response] = await vertexClient.predict(request);
-
-    console.log("🔍 Vertex AI Response:", JSON.stringify(response, null, 2));
-
-    // Extract response
-    const quizData = response?.predictions?.[0]?.content;
-    if (!quizData) {
-      console.error("❌ Error: Vertex AI returned no content");
-      throw new Error("No content in Vertex AI response.");
-    }
-
-    // Parse AI response
-    let parsedQuiz;
     try {
-      parsedQuiz = JSON.parse(quizData);
-    } catch (err) {
-      console.error("❌ JSON Parsing Error:", err);
-      return res.status(500).json({ error: "Invalid AI response format." });
-    }
+        const { topic } = req.body;
 
-    console.log("✅ Successfully generated quiz:", parsedQuiz);
-    res.json({ quiz: parsedQuiz.questions });
-  } catch (error) {
-    console.error("❌ Quiz Generation Error:", error.stack || error);
-    res.status(500).json({ error: error.message || "Failed to generate quiz!" });
-  }
+        const response = await axios.post(
+            API_URL,
+            {
+                instances: [{ prompt: `Generate 5 quiz questions on ${topic}.` }],
+                parameters: { temperature: 0.7, maxOutputTokens: 256 },
+            },
+            { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${process.env.VERTEX_AI_KEY}` } }
+        );
+
+        const quizQuestions = response.data.predictions;
+        res.json({ questions: quizQuestions });
+    } catch (error) {
+        console.error("Error generating quiz:", error);
+        res.status(500).json({ error: "Failed to generate quiz." });
+    }
 });
+
 
 // Google Books API Route
 const googleBooksApiKey = process.env.GOOGLE_BOOKS_API_KEY;
@@ -253,5 +193,5 @@ app.post("/chatbot", async (req, res) => {
 
 // Start the server
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => console.log(`🔥 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(` Server running on port ${PORT}`));
 
