@@ -55,11 +55,9 @@ export default function Sidebar() {
           <li><Link to="/gradepage" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📊 Grades</Link></li>
           <li><Link to="/courses" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📚 Courses</Link></li>
           <li><Link to="/assignments" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📝 Assignments</Link></li>
-          <li><Link to="/schedule" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📅 Schedule</Link></li>
           <li><Link to="/resources" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>📂 Resources</Link></li>
           <li><Link to="/community" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>💬 Community</Link></li>
           <li><Link to="/quiz" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>❔ Quizzes</Link></li>
-          <li><Link to="/settings" className="hover:text-blue-500" onClick={() => setIsOpen(false)}>⚙️ Settings</Link></li>
           <li><Link to="/video-resources" className="hover:text-blue-500" onClick={() => setIsOpen(false)} >  🎥 Video Resources</Link></li>
           <li><Link to="/news" className="hover:text-blue-500" onClick={() => setIsOpen(false)} >  📰 News</Link></li>
 

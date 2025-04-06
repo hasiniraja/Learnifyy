@@ -1,5 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
+import Sidebar from "../components/Sidebar";
+
 
 const QuizPage = () => {
     const [topic, setTopic] = useState("");
@@ -22,6 +24,7 @@ const QuizPage = () => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+            <Sidebar />
             <h1 className="text-3xl font-bold mb-4">AI-Generated Quiz</h1>
             <input
                 type="text"
@@ -48,6 +51,7 @@ const QuizPage = () => {
                     </ul>
                 </div>
             )}
+             <Chatbot />
         </div>
     );
 };

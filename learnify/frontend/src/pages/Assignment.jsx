@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
+import Chatbot from "../components/Chatbot";
 
 const Assignments = () => {
   // Dummy data for assignments
@@ -103,8 +104,11 @@ const Assignments = () => {
         <h2 className="text-2xl font-bold mb-4">📂 Submit an Assignment</h2>
         <input type="file" onChange={handleFileChange} className="p-2 border rounded-lg" />
         {file && <p className="mt-2 text-sm text-gray-600">File selected: {file.name}</p>}
-        <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Upload</button>
+        <button className="mt-4 bg-black text-white px-4 py-2 rounded-lg">Upload</button>
       </div>
+      <Chatbot />
+
+
     </div>
   );
 };

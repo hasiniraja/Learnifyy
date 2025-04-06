@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import Chatbot from "../components/Chatbot";
 
 export default function CommunityPage() {
   const navigate = useNavigate();
@@ -54,6 +55,8 @@ export default function CommunityPage() {
           ))}
         </div>
       </div>
+      <Chatbot />
     </div>
+     
   );
 }
