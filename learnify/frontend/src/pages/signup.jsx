@@ -38,10 +38,28 @@ export default function SignUp() {
     setLoading(true);
     setError(null); // Reset previous errors
 
-    const userPayload = {
-      ...formData,
-      role: userType, // Assign correct role (learner/teacher)
+      let userPayload = {
+    first_name: formData.first_name,
+    last_name: formData.last_name,
+    email: formData.email,
+    phone_no: formData.phone_no,
+    password: formData.password,
+    role: userType,
+    createdAt: new Date(), // optional: for tracking sign-up time
+  };
+
+  if (userType === "learner") {
+    userPayload = {
+      ...userPayload,
+      dob: formData.dob ? new Date(formData.dob) : null,
+      education_lvl: formData.education_lvl,
     };
+  } else if (userType === "teacher") {
+    userPayload = {
+      ...userPayload,
+      subject: formData.subject,
+    };
+  }
 
     try {
       const response = await fetch("http://localhost:5001/signup", { // ✅ Fixed API URL
