@@ -104,7 +104,7 @@ export default function LoginPage() {
             </button>
           </form>
           <p className="mt-6 text-center text-lg text-gray-600">
-            Don't have an account? <a href="/signup" className="text-black font-bold">Sign up</a>
+            Don't have an account? <a href="/signup" className="text-black font-bold underline">Sign up</a>
           </p>
         </div>
       </div>

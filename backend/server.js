@@ -127,26 +127,49 @@ app.get("/api/books/search", async (req, res) => {
 // Signup route
 app.post("/signup", async (req, res) => {
   try {
-    const { first_name, last_name, email, password, phone_no, role, dob, education_lvl } = req.body;
+    const { first_name, last_name, email, password, phone_no, role, dob, education_lvl, subject } = req.body;
+
+    // Check if email already exists
     const existingUser = await admin.auth().getUserByEmail(email).catch(() => null);
     if (existingUser) {
       return res.status(400).json({ error: "Email is already registered!" });
     }
+
+    // Create user in Firebase Authentication
     const userRecord = await admin.auth().createUser({
       email,
       password,
       displayName: `${first_name} ${last_name}`,
     });
-    await db.collection("Users").doc(userRecord.uid).set({
+
+    // Prepare user data for Firestore
+    const userData = {
       uid: userRecord.uid,
       first_name,
       last_name,
       phone_no,
-      role, 
-      dob: admin.firestore.Timestamp.fromDate(new Date(dob)),
-      education_lvl,
+      role,
       createdAt: admin.firestore.Timestamp.now(),
-    });
+    };
+
+    // Add fields based on user type
+    if (role === 'learner') {
+      // Convert dob to Firestore Timestamp for learners
+      let dobTimestamp = null;
+      if (dob) {
+        dobTimestamp = admin.firestore.Timestamp.fromDate(new Date(dob));
+      }
+      
+      userData.dob = dobTimestamp;
+      userData.education_lvl = education_lvl;
+      
+    } else if (role === 'teacher') {
+      userData.subject = subject;
+    }
+
+    // Store user details in Firestore
+    await db.collection("Users").doc(userRecord.uid).set(userData);
+
     res.status(202).json({ message: "User signed up successfully!", user: userRecord });
   } catch (error) {
     console.error("Signup Error:", error);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // For navigation
+import { useNavigate } from "react-router-dom"; 
 import Lottie from "lottie-react";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
@@ -8,7 +8,7 @@ const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const [userType, setUserType] = useState("learner"); // learner or teacher
+  const [userType, setUserType] = useState("learner"); 
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -40,7 +40,7 @@ export default function SignUp() {
     setLoading(true);
     setError(null); 
 
-      let userPayload = {
+    let userPayload = {
     first_name: formData.first_name,
     last_name: formData.last_name,
     email: formData.email,
@@ -165,10 +165,8 @@ export default function SignUp() {
               </div>
             )}
 
-            {/* Error Message */}
             {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
-            {/* Submit Button */}
             <button 
               type="submit" 
               className="w-full bg-black text-white py-3 text-lg rounded-lg hover:bg-gray-600 transition"
@@ -180,7 +178,7 @@ export default function SignUp() {
 
           {/* Login Redirect */}
           <p className="mt-6 text-center text-lg text-gray-600">
-            Already have an account? <a href="/login" className="text-black font-bold">Login</a>
+            Already have an account? <a href="/login" className="text-black font-bold underline">Login</a>
           </p>
         </div>
       </div>
