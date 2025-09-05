@@ -12,7 +12,6 @@ import {
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import Sidebar from "../components/Sidebar";
 import Chatbot from "../components/Chatbot";
 
 const TeacherDashboard = () => {
@@ -141,7 +140,6 @@ const TeacherDashboard = () => {
 
   return (
     <div className="flex">
-      <Sidebar />
       <div className="flex-1 p-6">
         {/* Teacher Dashboard Banner */}
         <div className="bg-blue-100 ml-10 p-8 min-h-100 rounded-2xl flex items-center gap-6 shadow-md">
