@@ -18,7 +18,7 @@ const ResourcePage = () => {
 
   const fetchBooks = async (searchQuery) => {
     try {
-      const response = await fetch(`http://localhost:5001/api/books/search?q=${searchQuery}`);
+      const response = await fetch(`http://localhost:5000/api/books/search?q=${searchQuery}`);
       const data = await response.json();
       setBooks(data);
     } catch (error) {

@@ -24,17 +24,6 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
-const apiKey = process.env.GEMINI_API_KEY;
-if (!apiKey) {
-  console.error("GEMINI_API_KEY is not set in your .env file.");
-  process.exit(1);
-}
-const genAI = new GoogleGenerativeAI(apiKey);
-const model = genAI.getGenerativeModel({ model: "gemini-pro" }); 
-app.get("/", (req, res) => {
-  res.send("Server is running!");
-});
-
 const API_KEY = process.env.NEWS_API_KEY;
 const CX_CODE = process.env.GOOGLE_CX_CODE;
 app.get("/search", async (req, res) => {
@@ -177,7 +166,19 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+
 // Chatbot route
+const apiKey = process.env.GEMINI_API_KEY;
+if (!apiKey) {
+  console.error("GEMINI_API_KEY is not set in your .env file.");
+  process.exit(1);
+}
+const genAI = new GoogleGenerativeAI(apiKey);
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" }); 
+app.get("/", (req, res) => {
+  res.send("Server is running!");
+});
+
 app.post("/chatbot", async (req, res) => {
   try {
     const { userMessage } = req.body;
@@ -186,6 +187,7 @@ app.post("/chatbot", async (req, res) => {
     }
     const result = await model.generateContent(userMessage);
     const responseText = result.response.text();
+
     res.json({ response: responseText });
   } catch (error) {
     console.error("Chatbot Error:", error);
