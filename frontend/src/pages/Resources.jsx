@@ -34,10 +34,10 @@ const ResourcePage = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex">
       <Sidebar />
       <div className="p-8 w-full">
-        <h1 className="text-4xl font-bold text-black mb-6 text-center">8th Grade Resources</h1>
+        <h1 className="text-4xl font-bold text-black mb-6 text-center">Book Resources</h1>
 
         {/* Search Bar */}
         <form onSubmit={handleSearch} className="flex items-center max-w-2xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden mb-8">

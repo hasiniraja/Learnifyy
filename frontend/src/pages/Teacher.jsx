@@ -183,20 +183,20 @@ const TeacherDashboard = () => {
 
         {/* Action Buttons */}
         <div className="mt-8 flex space-x-4">
-          <button className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+          <button className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800">
             Manage Queries
           </button>
-          <button className="px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700">
+          <button className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800">
             Upload Resources
           </button>
-          <button className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700">
+          <button className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800">
             View Assignments
           </button>
 
           {/* Create Assignment Button */}
           <button
             onClick={() => setShowAssignmentModal(true)}
-            className="px-6 py-3 bg-orange-600 text-white rounded-md hover:bg-orange-700"
+            className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800"
           >
             + Create Assignment
           </button>

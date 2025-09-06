@@ -257,8 +257,8 @@ const Courses = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <Sidebar />
-      <div className="ml-64">
-        <h1 className="text-3xl font-bold text-center mb-6">📚 {userClass.replace('_', ' ')} Courses</h1>
+      <div className="p-8 w-3/4 mx-auto">
+        <h1 className="text-3xl font-bold text-center mb-6">Courses for {userClass.replace('_', ' ')} </h1>
 
         {loading ? (
           <div className="text-center py-10">Loading subjects...</div>

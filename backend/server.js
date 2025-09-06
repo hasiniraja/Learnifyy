@@ -24,6 +24,12 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
+const apiKey = process.env.GEMINI_API_KEY;
+if (!apiKey) {
+  console.error("GEMINI_API_KEY is not set in your .env file.");
+  process.exit(1);
+}
+
 const API_KEY = process.env.NEWS_API_KEY;
 const CX_CODE = process.env.GOOGLE_CX_CODE;
 app.get("/search", async (req, res) => {
@@ -42,76 +48,46 @@ app.get("/search", async (req, res) => {
 });
 
 // Quiz route
+
 app.post("/generate-quiz", async (req, res) => {
   try {
-    const { topic } = req.body;
-    const auth = new GoogleAuth({
-      credentials: {
-        client_email: serviceAccount.client_email,
-        private_key: serviceAccount.private_key,
-      },
-      scopes: ["https://www.googleapis.com/auth/cloud-platform"],
-    });
-    const client = await auth.getClient();
-    const accessTokenResponse = await client.getAccessToken();
-    const accessToken = accessTokenResponse.token; // ✅ Extract the token string
-    const API_URL = `https://us-central1-aiplatform.googleapis.com/v1/projects/${process.env.GOOGLE_PROJECT_ID}/locations/us-central1/publishers/google/models/gemini-1.5-pro:predict`;
-    const response = await axios.post(
-      API_URL,
+    const { topic, difficulty } = req.body;
+    const effectiveDifficulty = difficulty || "medium";
+
+    const prompt = `
+    Generate 5 quiz questions on the topic "${topic}" at "${effectiveDifficulty}" level.
+
+    Return ONLY valid JSON (no explanations, no code fences) in this format:
+    [
       {
-        instances: [
-          { 
-            prompt: `Generate 5 quiz questions on ${topic}. Return each question on a new line. Example: What is the capital of France?` 
-          }
-        ],
-        parameters: { 
-          temperature: 0.7, 
-          maxOutputTokens: 1024 
-        },
-      },
-      {
-        headers: { 
-          "Content-Type": "application/json", 
-          "Authorization": `Bearer ${accessToken}` 
-        },
+        "question": "string",
+        "options": ["string", "string", "string", "string"],
+        "answer": "string"
       }
-    );
-    if (!response.data.predictions || response.data.predictions.length === 0) {
-      throw new Error("No predictions returned from Vertex AI");
+    ]
+    `;
+
+    const result = await model.generateContent(prompt);
+    let responseText = result.response.text();
+
+    // --- Step 1: Clean code fences if Gemini wrapped it ---
+    responseText = responseText.replace(/```json|```/g, "").trim();
+
+    let quizQuestions = [];
+    try {
+      quizQuestions = JSON.parse(responseText);
+    } catch (e) {
+      console.error("❌ JSON Parse Error:", e.message);
+      return res.status(500).json({ error: "Invalid quiz format from AI", raw: responseText });
     }
 
-    const generatedText = response.data.predictions[0].content;
-    const quizQuestions = generatedText.split('\n')
-      .filter(line => line.trim() !== '')
-      .map(line => line.replace(/^\d+[\.\)]\s*/, '').trim());
     res.json({ questions: quizQuestions });
-
   } catch (error) {
-    console.error("Error generating quiz:", error.response ? error.response.data : error.message);
-    res.status(500).json({ 
-      error: "Failed to generate quiz.",
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
-    });
+    console.error("Error generating quiz:", error.message);
+    res.status(500).json({ error: "Failed to generate quiz." });
   }
 });
 
-// Books route
-const googleBooksApiKey = process.env.GOOGLE_BOOKS_API_KEY;
-app.get("/api/books/search", async (req, res) => {
-  try {
-    const query = req.query.q;
-    if (!query) {
-      return res.status(400).json({ error: "Query parameter is required" });
-    }
-    const googleBooksUrl = `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${googleBooksApiKey}`;
-    const response = await fetch(googleBooksUrl);
-    const data = await response.json();
-    res.json(data.items || []);
-  } catch (error) {
-    console.error("Error fetching books:", error);
-    res.status(500).json({ error: "Failed to fetch books" });
-  }
-});
 
 // Signup route
 app.post("/signup", async (req, res) => {
@@ -168,11 +144,6 @@ app.post("/signup", async (req, res) => {
 
 
 // Chatbot route
-const apiKey = process.env.GEMINI_API_KEY;
-if (!apiKey) {
-  console.error("GEMINI_API_KEY is not set in your .env file.");
-  process.exit(1);
-}
 const genAI = new GoogleGenerativeAI(apiKey);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" }); 
 app.get("/", (req, res) => {

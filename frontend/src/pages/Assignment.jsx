@@ -90,7 +90,7 @@ const Assignments = () => {
       <div className="flex-1 p-6">
         {/* Upcoming Assignments Section*/}
         <div className="p-4 bg-white rounded-xl mt-6">
-          <h2 className="text-xl font-bold mb-4 w-4/5 mx-auto">📝 Upcoming Assignments</h2>
+          <h2 className="text-4xl font-bold text-black mb-6 text-center">Upcoming Assignments</h2>
           <div className="grid gap-3">
             {assignments.map(assignment => (
               <div key={assignment.id} className="border p-3 rounded-lg w-3/4 mx-auto">

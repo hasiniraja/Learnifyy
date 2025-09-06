@@ -46,7 +46,7 @@ const NewsFeed = () => {
       <Sidebar />
 
       <div className="flex-1 p-6 bg-[#f9f9f9] min-h-screen">
-        <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-800">📰 News Feed</h1>
+        <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-800">News Feed</h1>
 
         <form
           onSubmit={handleSearch}

@@ -37,7 +37,7 @@ const GradePage = () => {
   return (
     <div className="flex bg-[#f7f9fc] min-h-screen">
       <Sidebar />
-      <div className="flex-1 p-8 ml-6">
+      <div className="p-8 w-3/4 mx-auto">
         
         {/* Grade Overview */}
         <div className="bg-gradient-to-r from-blue-100 to-blue-200 p-8 rounded-2xl shadow-lg text-center mb-10">

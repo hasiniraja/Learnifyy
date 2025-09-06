@@ -25,8 +25,8 @@ const VideoResources = () => {
   return (
     <div className="flex bg-[#f9f9f9] min-h-screen">
       <Sidebar />
-      <div className="flex-1 p-6">
-        <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">📚 Educational Video Resources</h1>
+      <div className="p-8 w-3/4 mx-auto">
+        <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">Educational Video Resources</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
           {videos.map((video, index) => (
