@@ -115,6 +115,43 @@ app.post("/motivate", async (req, res) => {
   }
 });
 
+// YouTube API endpoint
+app.get('/api/youtube/search', async (req, res) => {
+  try {
+    const { query, maxResults = 12 } = req.query;
+    
+    if (!query) {
+      return res.status(400).json({ error: 'Query parameter is required' });
+    }
+
+    const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
+      params: {
+        part: 'snippet',
+        q: `${query} educational tutorial`,
+        type: 'video',
+        maxResults: maxResults,
+        key: process.env.YOUTUBE_API_KEY,
+        videoEmbeddable: 'true'
+      }
+    });
+
+    // Format the response to include only needed data
+    const videos = response.data.items.map(item => ({
+      id: item.id.videoId,
+      title: item.snippet.title,
+      description: item.snippet.description,
+      thumbnail: item.snippet.thumbnails.medium.url,
+      channelTitle: item.snippet.channelTitle,
+      publishedAt: item.snippet.publishedAt,
+      url: `https://www.youtube.com/embed/${item.id.videoId}`
+    }));
+
+    res.json(videos);
+  } catch (error) {
+    console.error('YouTube API Error:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Failed to fetch videos from YouTube' });
+  }
+});
 
 
 // Signup route
