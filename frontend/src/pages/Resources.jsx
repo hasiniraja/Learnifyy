@@ -17,14 +17,15 @@ const ResourcePage = () => {
   const [query, setQuery] = useState("");
 
   const fetchBooks = async (searchQuery) => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/books/search?q=${searchQuery}`);
-      const data = await response.json();
-      setBooks(data);
-    } catch (error) {
-      console.error("Error fetching books:", error);
-    }
-  };
+  try {
+    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&maxResults=12`);
+    const data = await response.json();
+    setBooks(data.items || []);
+  } catch (error) {
+    console.error("Error fetching books:", error);
+    setBooks([]);
+  }
+};
 
   const handleSearch = (e) => {
     e.preventDefault();

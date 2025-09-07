@@ -88,6 +88,34 @@ app.post("/generate-quiz", async (req, res) => {
   }
 });
 
+// Motivation route
+app.post("/motivate", async (req, res) => {
+  try {
+    const { mood } = req.body; 
+    
+    const prompt = `
+    Persona: Act as an empathetic and highly supportive mentor. Your tone should be warm, gentle, and non-judgmental. Avoid "fix-it" commands.
+
+    Context: The user is a student feeling overwhelmed. They need comfort and a simple, low-effort coping mechanism. The student's message is: "${mood}".
+
+    Task: Generate a response with two components:
+    1. Validation and Encouragement: Start by acknowledging their feelings and offer a brief message of reassurance (1-2 sentences).
+    2. Actionable Micro-Tip: Provide one simple action the student can perform in under 60 seconds for immediate relief (e.g., a grounding technique, a quick stretch, progressive muscle relaxation).
+
+    Constraint: Keep the entire response concise (under 100 words) so it's easy to absorb.
+    `;
+    
+    const result = await model.generateContent(prompt);
+    const responseText = result.response.text();
+
+    res.json({ message: responseText });
+  } catch (error) {
+    console.error("Motivation Error:", error);
+    res.status(500).json({ error: "Failed to fetch motivation." });
+  }
+});
+
+
 
 // Signup route
 app.post("/signup", async (req, res) => {
@@ -141,7 +169,6 @@ app.post("/signup", async (req, res) => {
     res.status(401).json({ error: error.message });
   }
 });
-
 
 // Chatbot route
 const genAI = new GoogleGenerativeAI(apiKey);

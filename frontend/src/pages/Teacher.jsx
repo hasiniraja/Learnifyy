@@ -10,8 +10,9 @@ import {
   doc,
   getDoc
 } from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
 import Chatbot from "../components/Chatbot";
 
 const TeacherDashboard = () => {
@@ -27,6 +28,7 @@ const TeacherDashboard = () => {
 
   const auth = getAuth();
   const db = getFirestore();
+   const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchUserData = async (uid) => {
@@ -121,6 +123,15 @@ const TeacherDashboard = () => {
     }
   };
 
+   const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate("/"); 
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setAssignmentData(prev => ({
@@ -136,11 +147,25 @@ const TeacherDashboard = () => {
     }));
   };
 
+
   if (loading) return <h1 className="text-center text-xl">Loading...</h1>;
 
   return (
+    
     <div className="flex">
       <div className="flex-1 p-6">
+        <div className="flex justify-between items-center mb-6">
+  <h1 className="text-2xl font-bold">Teacher Dashboard</h1>
+  <button
+    onClick={handleLogout}
+    className="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-md flex items-center"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+      <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd" />
+    </svg>
+    Logout
+  </button>
+</div>
         {/* Teacher Dashboard Banner */}
         <div className="bg-blue-100 ml-10 p-8 min-h-100 rounded-2xl flex items-center gap-6 shadow-md">
           <img

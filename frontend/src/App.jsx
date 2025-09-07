@@ -17,6 +17,7 @@ import VideoResources from "./pages/VideoResources";
 import GradePage from "./pages/GradePage";
 import NewsFeed from "./pages/NewsFeed";
 import Courses from "./pages/Courses";
+import StressRelief from "./pages/StressRelief";
 
 
 
@@ -42,6 +43,7 @@ export default function App() {
         <Route path="/gradepage" element={<GradePage />} />
         <Route path="/news" element={<NewsFeed />} />
         <Route path="/courses" element={<Courses />} />
+        <Route path="/stressed" element={<StressRelief />} />
       </Routes>
     </Router>
   );
