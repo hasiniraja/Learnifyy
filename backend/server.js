@@ -32,6 +32,8 @@ if (!apiKey) {
 
 const API_KEY = process.env.NEWS_API_KEY;
 const CX_CODE = process.env.GOOGLE_CX_CODE;
+
+//news
 app.get("/search", async (req, res) => {
     try {
         const query = req.query.q; 
@@ -70,7 +72,6 @@ app.post("/generate-quiz", async (req, res) => {
     const result = await model.generateContent(prompt);
     let responseText = result.response.text();
 
-    // --- Step 1: Clean code fences if Gemini wrapped it ---
     responseText = responseText.replace(/```json|```/g, "").trim();
 
     let quizQuestions = [];
@@ -135,7 +136,6 @@ app.get('/api/youtube/search', async (req, res) => {
       }
     });
 
-    // Format the response to include only needed data
     const videos = response.data.items.map(item => ({
       id: item.id.videoId,
       title: item.snippet.title,
@@ -159,20 +159,17 @@ app.post("/signup", async (req, res) => {
   try {
     const { first_name, last_name, email, password, phone_no, role, dob, education_lvl, subject } = req.body;
 
-    // Check if email already exists
     const existingUser = await admin.auth().getUserByEmail(email).catch(() => null);
     if (existingUser) {
       return res.status(400).json({ error: "Email is already registered!" });
     }
 
-    // Create user in Firebase Authentication
     const userRecord = await admin.auth().createUser({
       email,
       password,
       displayName: `${first_name} ${last_name}`,
     });
 
-    // Prepare user data for Firestore
     const userData = {
       uid: userRecord.uid,
       first_name,
@@ -182,9 +179,7 @@ app.post("/signup", async (req, res) => {
       createdAt: admin.firestore.Timestamp.now(),
     };
 
-    // Add fields based on user type
     if (role === 'learner') {
-      // Convert dob to Firestore Timestamp for learners
       let dobTimestamp = null;
       if (dob) {
         dobTimestamp = admin.firestore.Timestamp.fromDate(new Date(dob));

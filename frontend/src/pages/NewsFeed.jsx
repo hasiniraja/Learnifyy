@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import { motion } from "framer-motion";
 import Chatbot from "../components/Chatbot";
+import axios from "axios";
 
 
 const NewsFeed = () => {
@@ -12,24 +13,16 @@ const NewsFeed = () => {
     const trimmedQuery = searchQuery.trim();
     if (!trimmedQuery) return;
 
-    const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
-    const CX_CODE = import.meta.env.VITE_GOOGLE_CX_CODE;
+    const url = `http://localhost:5000/search?q=${encodeURIComponent(trimmedQuery)}`;
 
-    if (!API_KEY || !CX_CODE) {
-      console.error("Missing API Key or CX Code in .env file!");
-      return;
-    }
-
-    const url = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(trimmedQuery)}&cx=${CX_CODE}&key=${API_KEY}`;
 
     try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
-      const data = await response.json();
-      setNews(data.items || []);
+      const response = await axios.get(url);
+      setNews(response.data.items || []);
     } catch (error) {
       console.error("Error fetching news:", error);
     }
+
   };
 
   useEffect(() => {
