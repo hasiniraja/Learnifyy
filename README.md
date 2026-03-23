@@ -1,4 +1,10 @@
-# Learnify 🎓
+# Learnify 🎓  
+### _Learn smarter. Learn anywhere._
+
+ #### 🎥 Demo Video
+[![Watch the Demo](https://img.youtube.com/vi/XrmGbv5s7Ug/0.jpg)](https://www.youtube.com/watch?v=XrmGbv5s7Ug)
+
+---
 
 ## Overview
 **Learnify** is an AI-powered educational platform built for the **Google Solution Challenge 2025**, focused on delivering **accessible, low-bandwidth, and personalized learning** for underprivileged and under-resourced students.
